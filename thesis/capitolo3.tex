@@ -1,0 +1,333 @@
+\chapter{State of the Art}
+\label{chapter3}
+\thispagestyle{empty}
+
+\begin{quotation}
+{\footnotesize
+\noindent \emph{The measure of greatness in a scientific idea is the extent to which it stimulates thought and opens up new lines of research.}
+\begin{flushright}
+ Paul A.M. Dirac
+\end{flushright}
+}
+\end{quotation}
+\vspace{0.5cm}
+
+\noindent In this chapter, we present the framework of Configurable Markov Decision Processes \citep{cmdp} \cref{sec:cmdp} since it is the MDP extension that formalizes our learning problem. We recall that our main goal is to find an algorithm able to jointly optimize policy and model parameters by keeping into account their relationship. In \cref{sec:reps}, we present the Relative Entropy Policy Search (REPS) algorithm as our algorithm takes inspiration from it.
+
+\section{Configurable Markov Decision Processes}\label{sec:cmdp}
+In most of the problems tackled by RL the environment is considered to be a \textit{fixed} entity that cannot be controlled. Nevertheless, there exist several real-world motivational examples in which a partial control on the environment can be exercised by the agent itself or by an external \textit{supervisor}. 
+With the phrase \textit{environment configuration} we refer to the activity of altering some environmental parameters to improve the performance of the agent. \newline
+Configurable Markov Decision Processes (CMDPs) are an extension to the Markov Decision Processes framework that considers the environment optimization. A CMDP is an MDP in which it is possible to \textit{configure} some environmental parameters in order to improve the agent performance or the learning speed. 
+CMDPs arise naturally in many real world cases. Formula One engineers have to configure their cars (e.g. wings, tyres, engine, brakes) to minimize lap time. In industry, machines have to be configured to maximize the production rate. 
+These are cases in which the goal of the configuration is to improve performance, however in the case of car race it is possible for the supervisor to improve the learning speed of the pilot by presenting tracks of different difficulty. This example resembles the child example in \cref{Introduction}, in which parents present to their son goals of different difficulty, in order to teach him to walk. \newline
+ In all the above examples the \textit{agent} or a \textit{supervisor} configures some environmental parameters to achieve good performance. \newline
+ In this work we consider \textit{configurable transition functions} and we focus on how to improve performances by jointly optimizing the environment and the policy. \newline
+ We remark that there is a profound difference between this scenario and the other MDP extensions presented in \cref{sec:mdp-ext}.
+ In other MDP extensions the environment is assumed not fixed or not fully known in the case of MDPIP, that is the transition function is not stationary, but there is no possibility to configure it. In the context of CMDPs the environment is not fixed since we want to exploit the configurability structure to obtain a performance gain. 
+ 
+ \subsection{Formal Model}
+ The following definition characterizes the \textit{Configurable Markov Decision Processes}.
+ 
+ \begin{definition}[Configurable Markov Decision Process]
+ 	A Configurable Markov Decision Process is a tuple $\mathcal{CM}= \langle \mathcal{S}, \mathcal{A}, R, \mu, \gamma, \mathcal{P}, \Pi\rangle$, where $\langle \mathcal{S}, \mathcal{A}, R, \mu, \gamma \rangle$ is an MDP without the transition model, $\mathcal{P}$ is the model space and $\Pi$ is the policy space.
+ \end{definition}
+ The model space $\mathcal{P}$ will be sometimes referred to as configuration space in the rest of the document.
+In this scenario the learning subjects are the policy and the model spaces. The performance of a model-policy pair is denoted by $J_{\mu}^{P, \pi}$ and defined as:
+\begin{equation}
+	J_{\mu}^{P, \pi} = \frac{1}{1-\gamma}\int_{\mathcal{S}}d_{\mu}^{P,\pi}(s) \int_{\mathcal{A}}\pi(a | s) \int_{\mathcal{S}} P(s' | s, a)R(s,a,s') \mathrm{d}s \mathrm{d}a \mathrm{d}s \, ,
+\end{equation}
+
+where $d_{\mu}^{P, \pi}$ is the discounted state distribution induced by the model $P$ and the policy $\pi$ (see \cref{sec:state-distr}).
+The goal of a learning process in a CMDP is to find a couple model-policy pair $(P^*, \pi^*)$ such that:
+\begin{equation}
+	P^*, \pi^* \in \underset{P \in \mathcal{P}, \pi \in \Pi}{\arg \max} J_{\mu}^{P, \pi}   \, .
+\end{equation}
+Recall that the standard MDP solution is only a half of the CMDP solution, as the MDP solution is defined as:
+\begin{equation}
+	\pi^* \in \underset{\pi \in \Pi}{\arg \max} J_{\mu}^{P, \pi}   \, ,
+\end{equation}
+under a fixed model $P$.
+In other words, it requires to find the optimal policy in a fixed environment $P$. \newline
+It is useful now to redefine some important quantities in the MDP theory by considering the contribution of the model:
+\begin{align}
+	& v^{P,\pi}(s) = \underset{
+	\begin{subarray}{c}
+		a \sim \pi(\cdot | s) \\
+		s' \sim P(\cdot | s,a)
+	\end{subarray}}{\mathbb{E}} \left[ R(s,a,s') + \gamma v^{P,\pi}(s') \right], \\
+	& q^{P,\pi} (s,a) = \underset{s' \sim P(\cdot | s,a)}{\mathbb{E}} \left[ R(s,a,s') + \gamma v^{P,\pi}(s') \right] \, .
+\end{align}
+These quantities are the same as the ones defined in \cref{sec:MDP} but here we emphasize the model contribution. Notice that in the case of fixed model (standard MDP framework) we can forget this dependency but in our context it is better to keep it explicit. \newline
+To measure the utility of a transition we introduce the state-action-next-state value function or U-function:
+\begin{equation}
+	u^{P,\pi}(s,a,s') = R(s,a,s') + \gamma v^{P,\pi}(s') \, .
+\end{equation}
+The U-function is the expected return starting from state $s$, taking action $a$, landing in state $s'$ and then following the trajectory induced by the policy $\pi$ and the model $P$. It can be considered as an extension of the action-value function that considers the contribution of the model.
+\subsection{Model and Policy spaces}
+In \cref{sec:policy} we discussed about possible policy parameterizations. Working with a bounded (e.g. parameterized) policy space can be beneficial since we have a finite number of parameters to tune. Besides reducing the search space, a bounded policy space can also represent real world limitations on the selection and implementation of the policy.
+Similarly, when configuring the transition model we can have different scenarios. In the most common case we are limited in the model selection, we can configure some MDP parameters (e.g. brake pressure, tyres type, wing angle) but we cannot configure the main dynamic laws (e.g. physics of the environment).
+In \citep{cmdp} three types of scenarios are defined:
+\begin{description}
+	\item \textbf{Unconstrained}: no limitation on the model and policy spaces. This is not the most common scenario, thus it is possible to have no constraints on the model (policy) selection.
+	\item \textbf{Constrained}: in this case we have an initial model (policy) $P_0$ ($\pi_0$) and we are not allowed to move too far. The notion of distance in this case can be expressed with the usual divergences between probability measures (e.g. Kullback-Leibler, Total Variation, Wasserstein). In this cases we formalize the model and policy spaces in the following way: \begin{align}
+		\mathcal{P} &= \left\{ P : d(P,P_0)< \epsilon_p \right\} \\
+		\Pi &= \left\{ \pi : d(\pi,\pi_0)< \epsilon_\pi \right\} \, .
+		\end{align}
+		\item \textbf{Parametric}: in the most common case only a limited part of the model can be configured. We can represent this scenario by means of a parametric model space in which the alteration are limited to the choice of the model parameters. 
+			We express this type of model and policy spaces by:
+			\begin{align}
+			\mathcal{P}_\Omega &= \left\{ P_{\boldsymbol{\omega}} : \boldsymbol{\omega} \in \Omega \subseteq \mathbb{R}^k \right\} \\
+			\Pi_\Theta &=  \left\{ \pi_{\boldsymbol{\theta}} : \boldsymbol{\theta} \in \Theta \subseteq \mathbb{R}^p \right\} \,.
+			\end{align}
+			From now on, we use $\boldsymbol{\theta}$ for identifying the policy parameters and $\boldsymbol{\omega}$ for identifying the model parameters.
+\end{description}
+The parametric case is the scenario mainly considered in this work.
+
+ \subsection{Theoretical Foundations}
+ 
+ Safe Policy Model Iteration (SPMI), presented in \citep{cmdp}, is a safe approach for solving the CMDP learning problem. A possible approach to Safe Reinforcement Learning is to employ a lower bound on the performance improvement obtained by moving from a model-policy pair $(P, \pi)$ to another pair $(P', \pi')$. Once obtained a lower bound on the performance improvement it is possible to maximize this lower bound finding the model-policy pair yielding the best possible improvement.
+It is useful to introduce some important quantities \citep{Kakade:2002:AOA:645531.656005, pmlr-v28-pirotta13}. 
+We define the policy advantage function, that quantifies how much an action is better than the others in a state:
+\begin{equation}
+	A^{P,\pi}(s,a) = q^{P, \pi}(s,a) - v^{P, \pi}(s) \, .
+\end{equation}
+We introduce the model advantage function, that quantifies how much landing in a state $s'$ after having performed action $a$ starting in state $s$ is better than the other states:
+\begin{align}
+	A^{P,\pi}(s,a,s') &= R(s,a,s') + \gamma v^{P, \pi}(s') - q^{P,\pi}(s,a) =\\
+	&= u^{P,\pi}(s,a,s') - q^{P,\pi}(s,a) \, .
+\end{align}
+We define the \textit{relative advantage} functions for quantifying the one-step improvement attained by a new policy $\pi'$ or a new model $P'$ when starting from the model $P$ and the policy $\pi$:
+\begin{align}
+	A_{P,\pi}^{P,\pi'}(s) = \underset{a \sim \pi'(\cdot | s)}{\mathbb{E}} \left[ A^{P,\pi}(s,a) \right], \\
+	A_{P,\pi}^{P',\pi}(s,a) =  \underset{s' \sim P'(\cdot | s,a)}{\mathbb{E}} \left[ A^{P,\pi}(s,a,s'). \right]
+\end{align}
+We define also their expected value under the $\gamma$-discounted state distribution:
+\begin{align}
+	& \mathds{A}_{P,\pi, \mu}^{P,\pi'} = \underset{\begin{subarray}{c}
+	a \sim \pi'(\cdot | s) \\
+	s \sim d_\mu^{P,\pi}
+\end{subarray}}{\mathbb{E}}
+	\left[ A^{P,\pi}(s,a) \right], \\
+	& \mathds{A}_{P,\pi, \mu}^{P',\pi} =  \underset{
+	\begin{subarray}{c}
+		(s,a) \sim \delta_\mu^{P,\pi} \\
+		s' \sim P'(\cdot | s,a)
+	\end{subarray}}{\mathbb{E}} \left[ A^{P,\pi}(s,a,s') \right] \, ,
+\end{align}
+Where $\delta_{\mu}^{P,\pi}$ is the stationary state--action distribution under the model $P$ and the policy $\pi$.
+From the previous theory we can obtain a lower bound of the performance improvement using only information available from the current model-policy.
+\begin{theorem}[Coupled Bound]
+The performance improvement of model-policy pair $(P',\pi')$ over $(P,\pi)$ can be lower bounded as:
+\begin{equation}
+	\underbrace{J_{\mu}^{P', \pi'} - J_{\mu}^{P, \pi}}_{\text{Performance improvement}} \geq \underbrace{\frac{\mathds{A}_{P,\pi, \mu}^{P',\pi'}}{1-\gamma}}_{\text{Advantage term}} - \underbrace{\frac{\gamma\Delta A^{P',\pi'}_{P,\pi}D_{\mathbb{E}}^{P'^{\pi'}, P^\pi}}{2 (1 -\gamma)^2}}_{\text{Dissimilarity Penalization}} \, ,
+\end{equation}	
+where $\Delta A^{P',\pi'}_{P,\pi} = \sup_{s,s' \in \mathcal{S}} \left|  A^{P',\pi'}_{P,\pi}(s') - A^{P',\pi'}_{P,\pi}(s) \right|$, and \newline $D_{\mathbb{E}}^{P'^{\pi'}, P^{\pi}} = \mathbb{E}_{s \sim d_{\mu}^{P,\pi}} || P'^{\pi'}(\cdot|s) - P^{\pi}(\cdot|s) ||$.
+\end{theorem}
+The bound is composed by two terms. The advantage term quantifies how much the model-policy pair $(P',\pi')$ is better with respect to the current one. The dissimilarity term is a penalization that prevents the algorithm from moving too far away from the current model-policy.
+In practice this bound it is difficult to use in an algorithm since it does not separate the dependence of the two main components of a CMDP.
+The lower bound on the performance improvement used in SPMI is the following.
+\begin{theorem}[Decoupled Bound]
+The performance improvement of model-policy pair $(P',\pi')$ over $(P,\pi)$ can be lower bounded as:
+	\begin{equation}
+	\underbrace{J_{\mu}^{P', \pi'} - J_{\mu}^{P, \pi}}_{\text{Performance improvement}} \geq B(P',\pi') = \underbrace{\frac{\mathds{A}_{P,\pi, \mu}^{P',\pi}+\mathds{A}_{P,\pi, \mu}^{P,\pi'}}{1-\gamma}}_{\text{Advantage term}}-\underbrace{\frac{\gamma\Delta q^{P,\pi}D}{2 (1 -\gamma)^2}}_{\text{Dissimilarity Penalization}} \, ,
+	\label{eq:spmi-lower}
+\end{equation}
+where $D$ is a dissimilarity term keeping into account the dissimilarity of the model and the policy and $\Delta q^{P,\pi} = \sup_{s, s' \in \mathcal{S}, a, a' \in \mathcal{A}} \left| q^{P,\pi}(s',a') - q^{P,\pi}(s,a) \right|$.
+\end{theorem}
+This bound effectively decouples the effect of the model and the policy and it is used in SPMI.
+\subsection{Safe Policy Iteration and Safe Model Iteration}
+In \citep{cmdp} the lower bound in \cref{th:policy_improvement} is used in different ways. When limited to policy learning, the resulting algorithm resembles  Safe Policy Iteration (SPI) \citep{pmlr-v28-pirotta13} but uses a new lower bound on performance improvement.
+The idea is to select a target policy $\bar{\pi}$, the greedy policy with respect to the q-function, and then find the value $\alpha^*$ such that the policy obtained as convex combination between the current policy and the target one maximizes the value of the lower bound.
+SPI is reported in \cref{alg:spi}. \newline
+Safe Model Iteration (SMI) is the symmetrical version with respect to SPI, for the model learning problem, that is learning the best model for the current policy. As before, the idea is to select a target model $\bar{P}$, the greedy model with respect to the u-function, and then find the value $\beta^*$ such that the model obtained as convex combination between the current model and the target one maximizes the value of the lower bound.
+SMI is reported in \cref{alg:smi}. \newline
+SMI-SPI is a sequential approach derived from the previous approaches. It does a full model learning with a fixed policy and then a full policy learning with fixed model. \newline
+SPI-SMI is the symmetrical version. It is worth noting that these two algorithms do not solve the original CMDP problem, but an approximated version.
+
+\begin{algorithm}[tb]
+  \caption{Safe Policy Iteration
+    \label{alg:spi}}
+  \begin{algorithmic}[1]
+  \Ensure{Optimal Policy}
+  \State Initialize $\pi^{(0)}$ randomly
+  \For{t = 0,1,... until convergence}
+  \State Evaluate current policy $\pi^{(t)}$
+  \State Compute target $\bar{\pi}(s) \in \arg \max_{a \in \mathcal{A}} q^{P,\pi}(s,a)$
+  \State Compute terms $\mathds{A}_{P, \pi, \mu}^{P,\bar{\pi}}, D_\infty^{\bar{\pi},\pi}, D_{\mathbb{E}}^{\bar{\pi}, \pi}, \Delta q^{P,\pi}$
+  \State Compute $\alpha^* = \min \left( \frac{(1-\gamma)}{\gamma \Delta q^{P,\pi}} \frac{\mathds{A}_{P, \pi, \mu}^{P,\bar{\pi}}}{D_\infty^{\bar{\pi},\pi}, D_{\mathbb{E}}^{\bar{\pi}, \pi}}, 1 \right)$ 
+   \State Update the policy as: $\pi^{(t+1)} = \alpha^* \bar{\pi} + \left( 1 - \alpha^* \right) \pi^{(t)}$ 
+  \EndFor \\
+  \Return{Optimal Policy $\pi^{(t)}$
+  } 	
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[tb]
+  \caption{Safe Model Iteration
+    \label{alg:smi}}
+  \begin{algorithmic}[1]
+  \Ensure{Optimal Model }
+  \State Initialize $P^{(0)}$ randomly
+  \For{t = 0,1,... until convergence}
+  \State Evaluate current model $P^{(t)}$
+  \State Compute target $\bar{P}(s,a) \in \arg \max_{s' \in \mathcal{S}} u^{P,\pi}(s,a,s')$
+  \State Compute terms $\mathds{A}_{P, \pi, \mu}^{\bar{P},\pi}, D_\infty^{\bar{P},P}, D_{\mathbb{E}}^{\bar{P}, P}, \Delta q^{P,\pi}$
+  \State Compute $\beta^* = \min \left( \frac{1-\gamma}{\gamma^2 \Delta q^{P,\pi}} \frac{\mathds{A}_{P, \pi, \mu}^{\bar{P},\pi}}{D_\infty^{\bar{P},P}, D_{\mathbb{E}}^{\bar{P}, P}}, 1 \right)$ 
+   \State Update the model as: $P^{(t+1)} = \beta^* \bar{P} + \left( 1 - \beta^* \right) P^{(t)}$ 
+  \EndFor \\
+  \Return{Optimal model $P^{(t)}$
+  } 	
+  \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Safe Policy Model Iteration}
+Safe Policy Model Iteration (SPMI) requires to compute the target policy $\bar{\pi}$ and model $\bar{P}$, then it computes the next policy and model as linear combination of the current pair and the target pair:
+\begin{align}
+	&\pi' = \alpha \bar{\pi} + (1-\alpha) \pi \\
+	&P' = \beta \bar{P} + (1-\beta) P \, ,
+\end{align}
+where $\alpha$ and $\beta$ are the parameters maximizing the lower bound in \ref{eq:spmi-lower}.
+SPMI is reported in \cref{alg:spmi}.
+
+\begin{algorithm}[tb]
+  \caption{Safe Policy Model Iteration
+    \label{alg:spmi}}
+  \begin{algorithmic}[1]
+  \Ensure{Optimal Model Policy Pair}
+  \State Initialize $\pi^{(0)}, P^{(0)}$ randomly
+  \For{t = 0,1,... until convergence}
+  \State $\bar{\pi}$ = PolicyChooser($\pi^{(t)}$)
+  \State $\bar{P}$ = ModelChooser($P^{(t)}$)
+  \State $\alpha^*, \beta^* = \arg \max_{\alpha, \beta} B(\alpha, \beta)$ 
+  \State $\pi^{(t+1)} = \alpha^* \bar{\pi} + (1 - \alpha)\pi^{(t)}$ 
+   \State $P^{(t+1)} = \beta^* \bar{P} + (1 - \beta)P^{(t)}$ 
+  \EndFor \\
+  \Return{Optimal Policy Model Pair ($P^{(t)},\pi^{(t)}$)
+  } 	
+  \end{algorithmic}
+\end{algorithm}
+
+In the SPMI algorithm, it is the value of the lower bound that selects which update has to be performed at each step, such as a policy update, a model update or a policy-model (joint) update. Instead, SPMI alternated (SPMI-alt) forces policy and model updates to be alternated, independently to the bound value.
+SPMI-sup uses the same update strategy of SPMI, but it optimizes a slightly looser lower bound on performance improvement. This bound is, basically, the straightforward restatement of the one presented in \citep{pmlr-v28-pirotta13}, adapted to deal with a learning problem in the CMDP framework:
+\begin{equation}
+	J_\mu^{P',\pi'} - J_\mu^{P,\pi} \geq \frac{\mathds{A}_{P,\pi, \mu}^{P',\pi}+\mathds{A}_{P,\pi, \mu}^{P,\pi'}}{1-\gamma} - \frac{\gamma\Delta q^{P,\pi}D_{\text{sup}}}{2 (1 -\gamma)^2}, 
+\end{equation}
+where $D_{\text{sup}}=D_\infty^{\pi',\pi^2} + 2 D_\infty^{\pi',\pi}D_\infty^{P',P} + \gamma D_\infty^{P',P^2}$ (see \citep{cmdp} for the definition of these distances), which is obtained by the dissimilarity term of the decoupled bound (\cref{eq:spmi-lower}), upper bounding $D_{\mathbb{E}}^{\pi',\pi} \leq D_\infty^{\pi',\pi}$ and $D_{\mathbb{E}}^{P',P} \leq D_\infty^{P',P}$.
+
+\subsection{Limitations}
+
+Although this approach succeeded in showing the advantages of configuring the environment in some illustrative examples, it is quite far from being applicable to real-world scenarios. We believe that the most significant limitations of SPMI are three. First, it is applicable only to problems with a finite state-actions space, while the most interesting examples of CMDPs have, at least, a continuous state space (e.g., the car configuration problem). Second, it requires a full knowledge of the environment dynamics. This latter limitation is the most relevant as, in reality we almost never know the true environment dynamics, and even if a model is available it might be too approximate or hardy usable being very complex and computationally expansive (e.g., the fluido-dynamical model of a car).
+A third problem could be the high sample complexity of safe methods. Being conservative, safe methods allow only small updates. Therefore the required number of iterations might be too high for online applications.
+
+ \clearpage
+ 
+ %%%%%%%%%%%%%%%%%%%% REPS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \section{Relative Entropy Policy Search} \label{sec:reps}
+ 
+ Relative Entropy Policy Search \citep{reps} (REPS) is an information theoretic approach to the problem of \textit{policy search}.
+ The main idea behind information theoretic approaches is to stay close to the observed data \citep{deisenroth_survey_2011}. This idea is translated in the constraint that the stationary distribution after the policy update should not jump away from the stationary distribution before the update. The updated policy should stay close to the old one to avoid premature convergence to highly suboptimal policies and to limit the information loss. \newline
+ Policy Gradient methods (\cref{sec:policy-search}) tackle this problem by allowing only small incremental policy updates. However, they are in some sense myopic, looking only at local information. REPS is a more powerful method based on a \textit{constrained maximization} problem with a closed form solution. By looking at a neighborhood of the current policy it is able to overcome local minima as we will see later in this dissertation. \newline
+ Natural Policy gradient algorithms \citep{kakade_natural_2002} were the first to implement the information theoretic approach but they still require a user-specified learning rate. REPS uses the same information theoretic constraint as Natural Actor Critic \citep{nac} (NAC), but updates the policy using a weighted maximum likelihood estimates, thus not requiring a learning rate.
+ The distance index used in the constraint $D_{KL}(d \| \bar{d})$, where $d$ is the distribution we search for and $\bar{d}$ is the distribution from which samples are generated, forces $d$ to be low where $\bar{d}$ is low, intuitively it prevents $d$ to move too far from the old data.
+ 
+ \subsection{Problem Formulation}
+ REPS considers infinite horizon problems, thus it maximizes the average reward per time step. 
+ We denote with $d^\pi(s)$ the stationary state distribution induced by the policy $\pi$, with $d^\pi(s,a) = d^\pi(s) \pi(a | s)$ the distribution over states and actions induced by the new policy, with $\bar{d}(s,a)$ the observed data distribution. 
+ \paragraph{Primal} The constrained optimization problem considered is the following:
+ \begin{align}
+ 	\underset{d}{\text{maximize}} & \; \int_{\mathcal{S}} \int_{\mathcal{A}} d^\pi (s,a) r(s,a) \, \mathrm{d}s \, \mathrm{d}a \\
+	\text{subject to}\; & D_{KL}(d^\pi | | \bar{d}) = \int_{\mathcal{S}} \int_{\mathcal{A}} d^\pi(s, a) \log \frac{d^\pi(s,a)}{\bar{d}(s,a)} \, \mathrm{d}s \, \mathrm{d}a \leq \epsilon \label{eq:kl_bound} \\
+	 	& \int_{\mathcal{S}} d^\pi(s') \phi(s') \mathrm{d}s' = \int_{\mathcal{S}}\int_{\mathcal{A}} \int_{\mathcal{S}} d^{\pi}(s,a) P(s' | s, a)\phi(s') \, \mathrm{d}s \, \mathrm{d}a \, \mathrm{d}s' \label{eq:feat_constr}\\
+	 	& \int_{\mathcal{S}} \int_{\mathcal{A}} d^\pi(s,a) \, \mathrm{d}s \, \mathrm{d}a  = 1 \label{eq:distr_constr} \, ,
+ \end{align}
+where $\phi : \mathcal{S} \rightarrow \mathbb{R}^k$ maps MDP states to stationary features under policy $\pi$. The constraint \cref{eq:feat_constr} is a consistency constraint that ensures the compatibility of the state action distribution $d^\pi$ with the transition model $P$.
+The key difference to the Linear Programming formulation (\cref{sec:lin_prog}) lies in the use of \cref{eq:kl_bound} that bounds the Kullback-Leibler distance of the new distribution from the old one.
+The choice of $\epsilon$ depends on the problem and on the number of samples available. \newline
+REPS can act as a global maximizer if provided with an infinite number of samples and with an extremely large $\epsilon$.
+ \paragraph{Dual} The REMPS problem is solved considering the dual:
+ \begin{align}
+ 	\min_{\theta, \eta} \; & \eta \log \left( \int_\mathcal{S} \int_{\mathcal{A}} \bar{d}(s,a) \exp\left( \epsilon + \frac{1}{\eta}\delta_\theta(s,a) \right) \mathrm{d}s \, \mathrm{d}a \right) \\
+ 	\text{subject to} \; & \eta \geq 0 \, ,
+ \end{align}
+where $\delta_\theta(s,a) = r(s,a) + \int_S P(s' | s,a) \theta^T \phi(s') \, ds' - \theta^T \phi(s)$ is the Bellman error. 
+By a simple re-parametrization of the dual with $\hat{\eta} = \eta^{-1}$ we obtain a convex problem that can be efficiently solved by standard optimizers such as Broyden–Fletcher–Goldfarb–Shannon (BFGS).
+
+\begin{theorem}[REPS Solution] The optimal policy solution of the REMPS problem defined above is:
+\begin{equation}
+	\pi(a | s) = \frac{\bar{d}(s,a) \exp(\frac{1}{\eta}\delta_\theta(s,a))}{\int_\mathcal{A}\bar{d}(s,a') \exp(\frac{1}{\eta}\delta_\theta(s,a')) \, da'} \, ,
+	\label{eq:reps_solution}
+\end{equation}
+where $\eta$ and $\theta$ are determined by the solution of the dual.
+\end{theorem}
+The interested reader is referred to \citep{reps} for the derivation of the solution.
+All components of REPS can be expressed by sample averages, thus the application of the algorithm to continuous state and action spaces is straightforward.
+
+\subsection{Parametric Policy}
+The solution (\ref{eq:reps_solution}) is possible if we have total freedom on the selection of the policy, that is when the policy space $\Pi$ is unbounded or when the state and action spaces are finite. In order to deal with either continuous state space or continuous action space the distributions $d^\pi(\cdot)$ and $\pi(\cdot | s)$ need to be represented by parametric distributions \citep{danielhierarchicalnodate}.
+The parametric distribution is obtained through Moment Projection of the distribution $d^\pi$, solution of the REPS problem, that we will denote as $d$ for ease of notation. The Moments Projection is obtained by searching for $\hat{d}, \hat{\pi}$ minimizing the KL-divergence $D_{KL}(d || \hat{d}\hat{\pi})$. The optimization problem is the following:
+\begin{align}
+	 \hat{d} \, , \hat{\pi} &=  \arg \min_{d', \pi'} \int_{\mathcal{S}} \int_{\mathcal{A}} d(s,a) \log \frac{d(s,a)}{d'(s) \pi'(a | s)} \, \mathrm{d}a \, \mathrm{d}s \\
+	 &=  \arg \min_{d', \pi'} -\int_{\mathcal{S}} \int_{\mathcal{A}} d(s,a) \log \left( d'(s)\pi'(a | s) \right) \, \mathrm{d}a \, \mathrm{d}s \\ 
+	 &=  \arg \min_{d', \pi'} -\int_{\mathcal{S}} \int_{\mathcal{A}}\bar{d}(s,a) \frac{d(s,a)}{\bar{d}(s,a)} \log \left( d'(s)\pi'(a | s) \right) \, \mathrm{d}a \, \mathrm{d}s \\ 
+	 &\approx \arg \min_{d', \pi'} -\sum_{(s,a)  \in \mathcal{D}} \exp\left(\frac{1}{\eta}\delta_\theta(s,a)\right) \log\left(d'(s)\pi'(a | s) \right) \, ,
+\end{align}
+where $\mathcal{D}$ is dataset collected with the distribution $\bar{d}$.
+The KL-divergence is estimated through importance sampling from samples coming from $\bar{d}$.
+
+\subsection{REPS extensions}
+\subsubsection{Episode-based REPS}
+In \citep{kupcsik_data-efficient_nodate} an episode-based version of REPS that is equivalent to stochastic search was presented. This REPS extension employs a meta-policy that defines the distribution from which policy parameters are drawn. The KL--constraint it is then defined at the level of the meta-policy. 
+The Episode-based REPS formulation is:
+\begin{align}
+	\max_{p} & \sum_{s,\boldsymbol{\psi}} p(s,\boldsymbol{\psi}) G_{s,\boldsymbol{\psi}} \\
+	\text{subject to} & \sum_{s,\boldsymbol{\psi}}p(s,\boldsymbol{\psi}) \log \frac{p(s,\boldsymbol{\psi})}{q(s,\boldsymbol{\psi})} < \epsilon \label{eq:eps-const} \\
+	& \sum_{s} p(s)\phi(s) = \hat{\phi} \label{eq:feat-av},
+\end{align}
+where parameters $\psi$ are the parameters of the meta policy, $G_{s,\psi}$ is the full return starting from $s$ with parameters $\psi$. The distribution $p$ is the distribution over context $s$ and meta policy parameters $\psi$. The \cref{eq:eps-const} bounds the relative entropy with respect to the observed distribution $q$. The last constraint is needed for continuous or high dimensional discrete state spaces and matches feature averages instead of single probability values. In \cref{eq:feat-av} $\phi(s)$ is the feature vector describing the context and $\hat{\phi}$ is the feature vector averaged over all observed contexts.
+\subsubsection{MORE}
+ Model-Based Relative-Entropy Stochastic Search \citep{more} (MORE) uses the same episode-based formulation of the policy search together with a constraint lower-bounding the entropy of the new policy, enforcing exploration. Moreover MORE learns a quadratic surrogate model of the objective function to compute the solution analytically.
+ MORE formulation is:
+ \begin{align}
+	\max_{\pi} & \int \pi(\boldsymbol{\theta})G_{\boldsymbol{\theta}} \mathrm{d}\boldsymbol{\theta} \\
+	\text{subject to} & \int_{\Theta} \pi(\boldsymbol{\theta}) \log \frac{\pi(\boldsymbol{\theta})}{q(\boldsymbol{\theta})} \mathrm{d}\boldsymbol{\theta} < \epsilon \\
+	& H(\pi) \ge \beta  \\
+	\int_{\Theta} \pi(\boldsymbol{\theta}) \mathrm{d}\boldsymbol{\theta} = 1,
+\end{align}
+where $G_{\boldsymbol{\theta}}$ denotes the expected return when evaluating parameter vector $\boldsymbol{\theta}$. The term $H(\pi) = - \int \pi(\boldsymbol{\theta})\log \pi(\boldsymbol{\theta}) \mathrm{d}\boldsymbol{\theta}$ denotes the entropy of the distribution $\pi$ and $q(\boldsymbol{\theta})$ is the old distribution.
+\subsubsection{Trust Region Approaches}
+REPS can also be related to algorithms using a trust region approach. The trust region is the neighbourhood of the current policy (defined by some distance) such that we can have a reliable estimate of the performance.
+ \paragraph{TRPO} Trust Region Policy Optimization (TRPO) \citep{trpo} uses this concept together with off policy optimization. This lead to the following formulation:
+ \begin{align}
+ 	 & \max_{\boldsymbol{\theta}'} \; L_{\boldsymbol{\theta}'}(\boldsymbol{\theta}) \\
+ 	 & \text{subject to} \; \bar{D}_{KL}^{d_{\boldsymbol{\theta}}}(\boldsymbol{\theta},\boldsymbol{\theta}') \leq \epsilon \, ,
+ \end{align}
+ where $\boldsymbol{\theta}$ are the current policy parameter, $\boldsymbol{\theta}'$ are the new policy parameter,  $L_{\boldsymbol{\theta}}(\boldsymbol{\theta}')$ is a surrogate of the performance of the new policy estimated under the old policy and $\bar{D}_{KL}^{d^{\boldsymbol{\theta}}}(\boldsymbol{\theta}, \boldsymbol{\theta}')$ is the expected KL--divergence between the new and the old policy. 
+ The theory justifying TRPO actually suggests using a penalty instead of a constraint, i.e., solving the unconstrained optimization problem:
+ \begin{equation}
+ 	 \max_{\boldsymbol{\theta}'} \; L_{\boldsymbol{\theta}}(\boldsymbol{\theta}') - \beta D_{KL}^{\max}(\boldsymbol{\theta}, \boldsymbol{\theta}') \, ,
+ \end{equation}
+ where $D_{KL}^{\max}(\boldsymbol{\theta}, \boldsymbol{\theta}') = \max_s D_{KL}^{\max}(\pi_{\boldsymbol{\theta}}(\cdot | s), \pi_{\boldsymbol{\theta}'} (\cdot | s))$.
+ TRPO uses a hard constraint rather than a penalty because it is hard to choose a single value of $\beta$ that performs well across different problems or even within a single problem, where the characteristics change over the course of learning.
+ \newline
+ \paragraph{PPO} Proximal Policy Optimization (PPO) \citep{ppo} implements the concept of trust region by using a clipped objective the prevents excessively large policy updates:
+ \begin{equation}
+ 	L^{clip}_{\boldsymbol{\theta}}(\boldsymbol{\theta}') = \underset{
+ 	\begin{subarray}{c}
+ 		s \sim d^\pi(\cdot) \\
+ 		a \sim \pi_{\boldsymbol{\theta}}(\cdot | s)
+ 	\end{subarray}
+ 	}{\mathbb{E}} \left[ \min \left( w_{\mathbr{\theta}'/\mathbr{\theta}}(a | s), \text{clip} \left( w_{\mathbr{\theta}'/\mathbr{\theta}}(a | s), 1-\epsilon, 1+\epsilon \right)\right) A_{\pi_{\boldsymbol{\theta}}}(s,a) \right] \, ,
+ \end{equation}
+ where $A_\pi (s,a)$ is the advantage function and $w_{\mathbr{\theta}'/\mathbr{\theta}}(a | s) = \frac{\pi_{\boldsymbol{\theta}'(a | s)}}{\pi_{\boldsymbol{\theta}(a | s)}}$ is the importance weight associated with action $a$ in state $s$.
+ \newline
+\paragraph{POIS} Policy Optimization via Importance Sampling (POIS) \citep{metellipolicy2018} is a model--free, actor--only, policy optimization algorithm, that mixes online and offline optimization to efficiently exploit the information contained in the collected trajectories. POIS explicitly accounts for the uncertainty introduced by the importance sampling by optimizing a surrogate objective function. The latter captures the trade-off between the estimated performance improvement and the variance injected by the importance sampling. The POIS algorithm uses as penalization the Rényi divergence \citep{renyi1961,  DBLP:journals/corr/abs-1206-2459}, an information--theoretic dissimilarity index between probability measures. The surrogate objective function proposed in action-based POIS is:
+  \begin{equation}
+	\mathcal{L}_{\boldsymbol{\theta}}^{\mathrm{A-POIS}}(\mathbr{\theta}) = \underset{
+ 	\begin{subarray}{c}
+ 		\tau \sim p(\cdot|\mathbr{\theta})
+ 	\end{subarray}
+ 	}{\mathbb{E}} \left[ w_{\mathbr{\theta}'/\mathbr{\theta}}(\tau_i) R(\tau_i)\right] - \lambda \sqrt{ \frac{\widehat{d}_2 \left( p(\cdot|\mathbr{\theta}') \| p(\cdot|\mathbr{\theta}) \right) }{N}  },
+\end{equation}
+where $w_{\mathbr{\theta}'/\mathbr{\theta}}(\tau_i)$ is the importance weights associated to the trajectory $\tau_i$, \newline $w_{\mathbr{\theta}'/\mathbr{\theta}}(\tau_i) = \frac{p(\tau_i|\mathbr{\theta}')}{p(\tau_i|\mathbr{\theta})} = \prod_{t=0}^{H-1} \frac{\pi_{\mathbr{\theta}'}(a_{\tau_i,t}|s_{\tau_i,t})}{\pi_{\mathbr{\theta}}(a_{\tau_i,t}|s_{\tau_i,t})}$, and the term $\widehat{d}_2 \left( p(\cdot|\mathbr{\theta}') \| p(\cdot|\mathbr{\theta}) \right)$ is the approximated Rényi divergence between the new stationary distribution and the old one: $$\widehat{d}_2\left(p(\cdot|\mathbr{\theta}') \| p(\cdot|\mathbr{\theta}) \right) = \frac{1}{N} \sum_{i=1}^N \prod_{t=0}^{H-1} d_{2} \left( \pi_{\mathbr{\theta}'}(\cdot|s_{\tau_i,t}) \| \pi_{\mathbr{\theta}}(\cdot|s_{\tau_i,t})\right).$$
+POIS has a strong theoretical grounding, since its surrogate objective function derives from a statistical bound on the estimated performance, that is able to capture the uncertainty induced by importance sampling. The experimental evaluation in \citep{metellipolicy2018} shows that POIS is able to achieve a performance comparable with TRPO and PPO.

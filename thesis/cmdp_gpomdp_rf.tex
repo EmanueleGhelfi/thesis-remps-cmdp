@@ -1,0 +1,37 @@
+\chapter{Gradient Methods for CMDP}
+\label{gradient_cmdp}
+\thispagestyle{empty}
+In this section we provide the straightforward extension of REINFORCE and G(PO)MDP gradient estimation optimizing the policy and the configuration parameters.
+\section{REINFORCE}
+Let us start by stating the expression of the gradient of the expected return with respect to a parametric transition model differentiable in its parameters $\boldsymbol{\omega}$.
+\begin{theorem}[P-Gradient Theorem, from \citep{cmdp}] Let $P_\omega$ be a class of parametric stochastic transition models differentiable in $\boldsymbol{\omega}$, $\pi$ be the current policy, the gradient of the expected return with respect to $\boldsymbol{\omega}$ is given by:
+$$
+\nabla_{\boldsymbol{\omega}}J^{P,\pi} = \int_{\mathcal{S}}\int_{\mathcal{A}} d^{P,\pi}(s,a) \int_{\mathcal{S}} \nabla_{\boldsymbol{\omega}}P_{\boldsymbol{\omega}}(s'|s,a)u^{P,\pi}(s,a,s') \mathrm{d}s' \mathrm{d}a \mathrm{d}s
+$$
+	
+\end{theorem}
+
+We can now derive in a straightforward manner the REINFORCE estimator for model learning:
+\begin{equation}
+\widehat{\nabla_{\boldsymbol{\omega}} J^{P,\pi}}_{RF} = \langle \left(\sum_{k=0}^H \nabla_{\bm{\omega}} \log P_{\boldsymbol{\omega}}(s_{k+1} |s_k, a_k) \right) \left( \sum_{k=0}^H \gamma^k R(s_k,a_k, s_{k+1}) \right) \rangle_N \, ,
+\end{equation}
+where $\langle \cdot \rangle_N$ denotes the empirical average over a batch size of dimension $N$.
+
+\section{G(PO)MDP}
+\label{gpomdp_cmdp}
+In order to derive the G(PO)MDP estimator for model learning we start from a trajectory based perspective:
+
+$$
+J^{P,\pi} = \int p_{\boldsymbol{\theta},\boldsymbol{\omega}}(\tau)G(\tau) \mathrm{d}\tau,
+$$
+where $p_{\boldsymbol{\theta},\boldsymbol{\omega}}(\tau)$ is the probability of the trajectory $\tau$ under the distribution induced by the parameters $\boldsymbol{\theta},\boldsymbol{\omega}$ and $G(\tau)$ is the return of the trajectory $\tau$.
+Using the log-trick and taking the derivative with respect to the model parameters we obtain:
+\begin{align}
+	\nabla_{\boldsymbol{\omega}}J^{P,\pi} &= \int p_{\boldsymbol{\theta},\boldsymbol{\omega}}(\tau) \nabla_{\boldsymbol{\omega}}\log p(\tau) G(\tau) \mathrm{d}\tau \\
+	&= \int p_{\boldsymbol{\theta},\boldsymbol{\omega}}(\tau) \left(\sum_{k=0}^{H} \log P_{\boldsymbol{\omega}}(s_{k+1} | s_k, a_k)  \right) G(\tau) .
+\end{align}
+Now we are exactly in the G(PO)MDP settings and we can use the following approximation of the gradient:
+\begin{equation}
+\widehat{\nabla_{\boldsymbol{\omega}} J^{P\pi}}_{G(PO)MDP} = \langle \sum_{l=0}^H \left( \sum_{k=l}^H \nabla_{\bm{\omega}} \log P_{\boldsymbol{\omega}}(s_{k+1} | s_k, a_k) \right) \left( \gamma^l R(s_l,a_l, s_{l+1}) \right) \rangle_N \, ,
+\end{equation}
+where $\langle \cdot \rangle_N$ denotes the empirical average over a batch size of dimension $N$.

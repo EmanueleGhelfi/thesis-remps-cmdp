@@ -1,0 +1,44 @@
+\chapter{REMPS derivation}
+\label{sec:remps_deriv}
+\thispagestyle{empty}
+
+\noindent This appendix provides the derivation of the REMPS solution.
+We report here the formulation of the REMPS problem. For the sake of brevity we use $\mathcal{X} = \mathcal{S} \times \mathcal{A} \times \mathcal{S}$ and $(s,a,s') = x \in \mathcal{X}$, moreover we indicate with $d(\cdot)$ the optimized distribution and with $d^{P,\pi}(\cdot)$ the sampling distribution.
+\begin{align}
+	\underset{d}{\text{maximize}} & \; \int_\mathcal{X}d(x)R(x) \\
+	\text{subject to} &  \; \int_\mathcal{X}d(x) \log \frac{d(x)}{d^{P,\pi}(x)} \mathrm{d}x \leq \epsilon \\
+	& \int_\mathcal{X} d(x) \mathrm{d}x = 1 \ \, .
+\end{align} 
+
+We solve the problem with Lagrangian multipliers. We denote with $\eta$ the langrangian multiplier associated with the KL constraint and with $\lambda$ the multiplier associated with the constraint of being a valid distribution.
+\begin{align}
+	\mathcal{L}(d(\cdot), \eta, \lambda) = &\int_\mathcal{X} d(x)R(x) \mathrm{d}x +\\ &+ \eta \left( \epsilon - \int_\mathcal{X} d'(x) \log \frac{d(x)}{d^{P,\pi}(x)} \mathrm{d}x \right) +\\ &+ \lambda \left(1 - \int_\mathcal{X} d(x) \mathrm{d}x \right) \, .
+	\label{eq:lagrangian}
+\end{align}
+Observe that $\frac{\partial}{\partial f(x_0)} \int f(x) g(x) dx = g(x_0)$. So we take the derivative with respect to $d(x)$ to get:
+\begin{equation}
+	R(x) - \eta \log \frac{d(x)}{d^{P,\pi}(x)} + \eta - \lambda = 0 \, ,
+\end{equation}
+from which we get, solving for $d(x)$:
+\begin{equation}
+	d(x) = d^{P,\pi}(x) \exp \left(\frac{R(x)}{\eta} \right) \exp \left( 1 - \frac{\lambda}{\eta} \right) \, .
+	\label{eq:remps-pol}
+\end{equation}
+By enforcing the constraint that $d$ should be a valid distribution we obtain:
+\begin{equation}
+	d(x) = \frac{d^{P,\pi}(x) \exp \left(\frac{R(x)}{\eta} \right)}{\int_\mathcal{X} d^{P,\pi}(x) \exp \left( \frac{R(x)}{\eta} \right) \mathrm{d}x} \, .
+\end{equation}
+
+Substituting into the Lagrangian function (\ref{eq:lagrangian}), we obtain the dual function:
+\begin{align}
+	g(\eta, \lambda) &= -\eta + \eta\epsilon + \lambda \\
+	&= \eta \log \left( \int_\mathcal{X} d^{P,\pi}(x) \exp \left(\epsilon + \frac{R(x)}{\eta} \right)\mathrm{d}x \right) \, .
+\end{align}
+
+From (\ref{eq:remps-pol}) we extract the policy and model inducing the distribution $d$. We return to the original formulation for the sake of clarity.
+\begin{align}
+	\pi'(a | s) &= \frac{\int_\mathcal{S}d(s,a,s') \mathrm{d}s'}{\int_\mathcal{A}\int_\mathcal{S}d(s,a,s') \mathrm{d}s' \mathrm{d}a} \\
+	&= \frac{\pi(a | s) \int_\mathcal{S} P(s' | s,a) \exp \left( \epsilon + \frac{R(x)}{\eta} \right) \mathrm{d}s'}{\int_\mathcal{A} \pi(a | s) \int_\mathcal{S} P(s'|s,a) \exp \left( \epsilon + \frac{R(x)}{\eta} \right) \mathrm{d}s' \mathrm{d}a}, \\
+	P'(s' | a, s) &= \frac{d(s,a,s')}{\int_\mathcal{S}d(s,a,s') \mathrm{d}s'} \\
+	&= \frac{P(s' | s,a) \exp \left( \epsilon + \frac{R(x)}{\eta} \right)}{\int_\mathcal{S} P(s' | s,a) \exp \left( \epsilon + \frac{R(x)}{\eta} \right) \mathrm{d}s'} \; .
+\end{align}

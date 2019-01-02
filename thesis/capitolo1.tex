@@ -1,0 +1,51 @@
+\chapter{Introduction}
+\label{Introduction}
+\thispagestyle{empty}
+
+\begin{quotation}
+{\footnotesize
+\noindent{\emph{Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do.}
+}
+\begin{flushright}
+Steve Jobs
+\end{flushright}
+}
+\end{quotation}
+\vspace{0.5cm}
+
+%% GENERAL FRAMEWORK
+Reinforcement Learning \citep{sutton_introduction} (RL) is a field of artificial intelligence (AI) and machine learning (ML) that deals with the problem of learning from interactions. In this context we define learning as the dynamic adaptation process of a behaviour in order to achieve some objective. We, as human beings continually face this problem. For example, as infants we were unable to walk. Nonetheless, we gradually understand the effect of our action through trials and errors, even without a supervisor teaching us how to do it. We start from no knowledge about how our actions influence the world, but in some months we learn how to reach our goal which, in this case, is walking. \newline
+Reinforcement Learning lies between the areas of neuroscience, artificial intelligence, optimal control, psychology, operation research and statistics. 
+RL considers \textit{Sequential Decision Making problems}, modeled as \textit{Markov Decision Processes} \citep{Puterman:1994:MDP:528623} (MDPs), which are problems arising in many real-world scenarios. In this settings the decision maker, referred to as the \textit{agent}, has to take decisions accounting for the environment uncertainty and its experience.
+Agents are \textit{goal-directed}, they need only a notion of goal, a numerical signal to be maximized. Unlike \textit{supervised learning}, in RL there is no need to provide good examples, it is the agent which learns how to map situations to actions. 
+The mapping from situation (states) to actions is called \textit{policy} in literature and it represents the agent's behaviour.
+Solving an MDP means finding the agent's policy by maximizing the total reward. \newline
+The RL approach has proven to be successful in several domains, such as robotics \citep{rl-robotics}, finance \citep{rl-finance}, videogames (Atari, Dota) \citep{rl-atari-1, rl-atari-2, rl-atari-3}, board games (Alpha Go) \citep{alpha-go, alpha-zero}.
+%%CMDP
+\subsubsection{Motivations}
+In most of the problems tackled by RL the environment is considered a \textit{fixed} entity that cannot be controlled. Nevertheless, there exist several real-world examples in which a partial control on the environment can be exercised by the agent itself or by an external \textit{supervisor}. 
+With the phrase \textit{environment configuration}, we refer to the activity of altering some environmental parameters to improve the performance of the agent.
+Consider, as before, a child learning to walk. His/her parents (supervisors) can dynamically configure the environment, trying to help their child. They can help their child during his/her first steps, they can reduce the pain while falling by using a mat, or they can help their child by setting up goals of increasing difficulty (e.g., walking further). \newline
+We can easily notice that most of the existing environments are consist of a \textit{fixed} part and a \textit{configurable} part. For example, in a car race the \textit{fixed} parts are the physics laws, while the \textit{configurable} parts are the wing angle, the type of tyres, the brake settings.
+This process of environment configuration is common in many other scenarios (e.g., robotics, e-learning).  \newline
+In these examples there is an entity entitled to configuration activity that configures some environment features (transition function, reward, task difficulty) in order to improve the learning speed or the final performance of the agent.
+\subsubsection{State of the Art}
+The scenarios presented above have been recently formalized as \textit{Configurable Markov Decision Processes} \citep{cmdp} (CMDP). Solving a CMDP means to find the agent's policy $\pi$ together with the environment configuration $P$ which, jointly, maximize the total reward. In  \citep{cmdp}, a safe-learning algorithm, \textit{Safe Policy Model Iteration} (SPMI), is presented to solve the learning problem in the CMDP framework. The basic idea is to optimize a lower bound on the performance improvement so that a monotonic performance improvement is guaranteed. Although this approach succeeded in showing the advantages of configuring the environment in some illustrative examples, it is quite far from being applicable to real-world scenarios. We believe that the most significant limitations of SPMI are two. First, it is only applicable to problems with a finite state-actions space, while the most interesting examples of CMDPs have, at least, continuous state space (e.g., the car configuration problem). Second, it requires full knowledge of the environment dynamics. This latter limitation is the most relevant as, in reality we almost never know the true environment dynamics, and even if a model is available it might be too approximate and hardy usable, being very complex and computationally expansive (e.g., the fluido-dynamical model of a car).
+\subsubsection{Goal}
+The aim of this thesis is to further investigate the close relationship between policy and environment and to find ways to optimize them jointly in order to achieve high performance.
+Our approach is intended to manage CMDPs with continuous action and state spaces and it does not require full knowledge of the model, an approximated (learned) model can be exploited. These features permits the application of our algorithm on real-world cases.
+\subsubsection{Contributions}
+The contributions of this thesis are algorithmic, theoretical and experimental. We present an algorithm derived from \textit{Relative Entropy Policy Search} (REPS) \citep{reps}, namely \textit{Relative Entropy Model Policy Search} (REMPS), which exploits a primal-dual formulation to update the model and policy parameters toward a local optimum. Moreover, we present a projection strategy suitable for CMDP that takes into account the joint effect of the policy and the transition function. \newline
+We derive some theoretical guarantees for the single step of REMPS, obtaining a bound on the difference of performance between the exact case and the approximated case.  \newline
+We show the experimental results of our algorithm on some standard RL benchmarks to highlight the importance of configuring the environment.
+%%%% OUTLINE
+\subsubsection{Thesis Outline}
+The structure of this thesis is organized as follows.
+In \cref{chapter2} we present the Reinforcement Learning and Markov Decision Processes frameworks, along with some notable extensions. We start from the Markov Decision Process formalization, we introduce the main components such as the transition function, the reward and the policy. Finally we describe the main approaches for solving MDPs, namely Linear Programming, Dynamic Programming and Policy Search. \newline
+In \cref{chapter3} we depict the State of the Art of Configurable Markov Decision Processes since our algorithm builds upon them. We focus on the motivations underlying the framework proposal and we outline some limitations of the state of the art method for solving CMDPs. The second part of the chapter is devoted to REPS and its extensions. \newline
+In \cref{chapter4} we present the main contributions of this thesis: the REMPS algorithm and its theoretical analysis. In the first part of the chapter we formalize the CMDP learning problem in an information theoretic fashion. Motivated by two theorems we consider three projection strategies suited for CMDPs. The main goal of the theoretical analysis is to provide a finite-sample analysis of the single step of REMPS. \newline
+In \cref{experimental_evaluation} we show the experimental evaluations of our algorithm on three illustrative examples. \newline
+\cref{capitolo7} contains the conclusion, in which we briefly describe our work together with some possible extensions and research directions. \newline
+\cref{LPproof} reports the proof of the Linear Programming solution presented in \cref{sec:lin_prog}.
+\cref{gradient_cmdp} contains the extension of two main estimators for the policy gradient to the case of the model gradient. 
+In \cref{sec:remps_deriv} we show the derivation of the REMPS solution in closed form.

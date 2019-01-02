@@ -1,0 +1,18 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+\usepgfplotslibrary{patchplots}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[ view = {150}{10},
+			xlabel={$\theta$},
+   			ylabel={$\omega$},
+   			zlabel={$J$},
+   			zlabel style={rotate=-90}
+]
+\addplot3 [surf, mesh/rows=20, patch type=bilinear]
+  table[x=theta, y=omega, z=J, col sep=comma] {./data/chain_surface.csv};
+
+\end{axis}
+\end{tikzpicture}
+\end{document}

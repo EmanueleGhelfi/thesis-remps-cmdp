@@ -1,0 +1,685 @@
+
+@book{sutton_introduction,
+	address = {Cambridge, MA, USA},
+	edition = {1st},
+	title = {Introduction to {Reinforcement} {Learning}},
+	abstract = {From the Publisher:In Reinforcement Learning, Richard Sutton and Andrew Barto provide a clear and simple account of the key ideas and algorithms of reinforcement learning. Their discussion ranges from the history of the field's intellectual foundations to the most recent developments and applications. The only necessary mathematical background is familiarity with elementary concepts of probability.},
+	publisher = {MIT Press},
+	author = {Sutton, Richard S. and Barto, Andrew G.},
+	year = {1998}
+}
+
+@inproceedings{pol_grad_func_approx,
+ author = {Sutton, Richard S. and McAllester, David and Singh, Satinder and Mansour, Yishay},
+ title = {Policy Gradient Methods for Reinforcement Learning with Function Approximation},
+ booktitle = {Proceedings of the 12th International Conference on Neural Information Processing Systems},
+ series = {NIPS'99},
+ year = {1999},
+ location = {Denver, CO},
+ pages = {1057--1063},
+ numpages = {7},
+ acmid = {3009806},
+ publisher = {MIT Press},
+ address = {Cambridge, MA, USA},
+} 
+
+@article{mdp,
+author = {Bellman, Richard},
+year = {1957},
+month = {04},
+pages = {15},
+title = {A Markovian Decision Process},
+volume = {6},
+booktitle = {Indiana University Mathematics Journal}
+}
+
+@book{Puterman:1994:MDP:528623,
+ author = {Puterman, Martin L.},
+ title = {Markov Decision Processes: Discrete Stochastic Dynamic Programming},
+ year = {1994},
+ edition = {1st},
+ publisher = {John Wiley \& Sons, Inc.},
+ address = {New York, NY, USA}
+ }
+
+@paper{reps,
+	author = {Jan Peters and Katharina Mulling and Yasemin Altun},
+	title = {Relative Entropy Policy Search},
+	conference = {AAAI Conference on Artificial Intelligence},
+	year = {2010},
+	keywords = {reinforcement learning, policy search, motor primitive selection}
+	}
+
+@InProceedings{cmdp,
+  title = {Configurable {M}arkov Decision Processes},
+  author = {Metelli, Alberto Maria and Mutti, Mirco and Restelli, Marcello},
+  booktitle = {Proceedings of the 35th International Conference on Machine Learning},
+  pages = {3488--3497},
+  year = {2018},
+  editor = {Dy, Jennifer and Krause, Andreas},
+  volume = {80},
+  series = {Proceedings of Machine Learning Research},
+  address = {Stockholmsmässan, Stockholm Sweden},
+  month = {10--15 Jul},
+  publisher = {PMLR}
+}
+
+@book{Bellman:1957,
+  added-at = {2011-08-17T16:08:47.000+0200},
+  author = {Bellman, Richard},
+  keywords = {book dynamic programming},
+  publisher = {Dover Publications},
+  timestamp = {2011-08-18T09:10:27.000+0200},
+  title = {{Dynamic Programming}},
+  year = 1957
+}
+
+
+
+@article{depenoux_probabilistic_1963,
+	title = {A {Probabilistic} {Production} and {Inventory} {Problem}},
+	volume = {10},
+	number = {1},
+	urldate = {2018-08-06},
+	journal = {Management Science},
+	author = {d'Epenoux, F.},
+	year = {1963},
+	pages = {98--108}
+}
+
+@book{howard:dp,
+  added-at = {2008-03-11T14:52:34.000+0100},
+  address = {Cambridge, MA},
+  author = {Howard, R. A.},
+  citeulike-article-id = {2380352},
+  keywords = {inaki},
+  priority = {2},
+  publisher = {MIT Press},
+  timestamp = {2008-03-11T14:56:12.000+0100},
+  title = {Dynamic Programming and Markov Processes},
+  year = 1960
+}
+
+
+@article{deisenroth_survey_2011,
+	title = {A {Survey} on {Policy} {Search} for {Robotics}},
+	volume = {2},
+	language = {en},
+	number = {1-2},
+	urldate = {2018-07-19},
+	journal = {Foundations and Trends in Robotics},
+	author = {Deisenroth, Marc Peter},
+	year = {2011},
+	pages = {1--142},
+}
+
+
+@inproceedings{Kakade:2002:AOA:645531.656005,
+ author = {Kakade, Sham and Langford, John},
+ title = {Approximately Optimal Approximate Reinforcement Learning},
+ booktitle = {Proceedings of the Nineteenth International Conference on Machine Learning},
+ series = {ICML '02},
+ year = {2002},
+ isbn = {1-55860-873-7},
+ pages = {267--274},
+ numpages = {8},
+ url = {http://dl.acm.org/citation.cfm?id=645531.656005},
+ acmid = {656005},
+ publisher = {Morgan Kaufmann Publishers Inc.},
+ address = {San Francisco, CA, USA},
+} 
+
+@InProceedings{pmlr-v28-pirotta13,
+  title = 	 {Safe Policy Iteration},
+  author = 	 {Matteo Pirotta and Marcello Restelli and Alessio Pecorino and Daniele Calandriello},
+  booktitle = 	 {Proceedings of the 30th International Conference on Machine Learning},
+  pages = 	 {307--315},
+  year = 	 {2013},
+  editor = 	 {Sanjoy Dasgupta and David McAllester},
+  volume = 	 {28},
+  number =       {3},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {Atlanta, Georgia, USA},
+  month = 	 {17--19 Jun},
+  publisher = 	 {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v28/pirotta13.pdf},
+  url = 	 {http://proceedings.mlr.press/v28/pirotta13.html},
+  abstract = 	 {This paper presents a study of the policy improvement step that can be usefully exploited by approximate policy-iteration algorithms.  When either the policy evaluation step or the policy improvement step returns an approximated result, the sequence of policies produced by policy iteration may not be monotonically increasing, and oscillations may occur.  To address this issue, we consider safe policy improvements, i.e., at each iteration we search for a policy that maximizes a lower bound to the policy improvement w.r.t. the current policy. When no improving policy can be found the algorithm stops.  We propose two safe policy-iteration algorithms that differ in the way the next policy is chosen w.r.t. the estimated greedy policy.  Besides being theoretically derived and discussed, the proposed algorithms are empirically evaluated and compared with state-of-the-art approaches on some chain-walk domains and on the Blackjack card game.}
+}
+
+@InProceedings{danielhierarchicalnodate,
+  title = 	 {Hierarchical Relative Entropy Policy Search},
+  author = 	 {Christian Daniel and Gerhard Neumann and Jan Peters},
+  booktitle = 	 {Proceedings of the Fifteenth International Conference on Artificial Intelligence and Statistics},
+  pages = 	 {273--281},
+  year = 	 {2012},
+  editor = 	 {Neil D. Lawrence and Mark Girolami},
+  volume = 	 {22},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {La Palma, Canary Islands},
+  month = 	 {21--23 Apr},
+  publisher = 	 {PMLR}
+}
+
+@incollection{more,
+title = {Model-Based Relative Entropy Stochastic Search},
+author = {Abdolmaleki, Abbas and Lioutikov, Rudolf and Peters, Jan R and Lau, Nuno and Pualo Reis, Luis and Neumann, Gerhard},
+booktitle = {Advances in Neural Information Processing Systems 28},
+editor = {C. Cortes and N. D. Lawrence and D. D. Lee and M. Sugiyama and R. Garnett},
+pages = {3537--3545},
+year = {2015},
+publisher = {Curran Associates, Inc.},
+}
+
+
+
+@article{kupcsik_data-efficient_nodate,
+	title = {Data-{Efficient} {Generalization} of {Robot} {Skills} with {Contextual} {Policy} {Search}},
+	language = {en},
+	author = {Kupcsik, Andras Gabor and Deisenroth, Marc Peter and Peters, Jan and Neumann, Gerhard},
+	pages = {7},
+	year={2013}
+}
+
+
+@phdthesis{bowerman_1974,
+	type = {{PhD} {Thesis}},
+	title = {Nonstationary {Markov} decision processes and related topics in nonstationary {Markov} chains},
+	language = {en},
+	school = {Iowa State University},
+	author = {Bowerman, Bruce Lee},
+	year = {1974},
+	file = {Bowerman - Nonstationary Markov decision processes and relate.pdf:/Users/emanueleghelfi/Zotero/storage/CHTA9MPK/Bowerman - Nonstationary Markov decision processes and relate.pdf:application/pdf}
+}
+
+
+@article{givan_bounded-parameter_2000,
+	title = {Bounded-parameter {Markov} decision processes},
+	abstract = {In this paper, we introduce the notion of a bounded-parameter Markov decision process (BMDP) as a generalization of the familiar exact MDP. A bounded-parameter MDP is a set of exact MDPs speciﬁed by giving upper and lower bounds on transition probabilities and rewards (all the MDPs in the set share the same state and action space). BMDPs form an efﬁciently solvable special case of the already known class of MDPs with imprecise parameters (MDPIPs). Bounded-parameter MDPs can be used to represent variation or uncertainty concerning the parameters of sequential decision problems in cases where no prior probabilities on the parameter values are available. Bounded parameter MDPs can also be used in aggregation schemes to represent the variation in the transition probabilities for different base states aggregated together in the same aggregate state.},
+	language = {en},
+	journal = {Artificial Intelligence},
+	author = {Givan, Robert and Leach, Sonia and Dean, Thomas},
+	year = {2000},
+	pages = {39}
+}
+
+
+@article{harmanec_generalizing_2002,
+	title = {Generalizing {Markov} decision processes to imprecise probabilities},
+	volume = {105},
+	abstract = {This paper is a ÿrst step towards generalizing the concept of a Markov decision process to imprecise probabilities. A concept of a generalized Markov decision process is deÿned and motivated. Finite horizon, fully observable models with total cumulative reward optimality criterion are studied. The imprecision in the model opens up a possibility of indecision. A solution procedure, that generalizes the backward induction method from the classical theory, is developed. This procedure ÿnds all maximal (i.e., undominated) policies for a given generalized Markov decision process. An example illustrating the solution method is given. The directions for further research are discussed. c 2002 Elsevier Science B.V. All rights reserved.},
+	language = {en},
+	number = {1},
+	urldate = {2018-09-06},
+	journal = {Journal of Statistical Planning and Inference},
+	author = {Harmanec, David},
+	month = jun,
+	year = {2002},
+	pages = {199--213}
+}
+
+@book{puterman2014markov,
+  added-at = {2017-04-07T12:13:11.000+0200},
+  author = {Puterman, Martin L},
+  biburl = {https://www.bibsonomy.org/bibtex/22e7ac99cd30c4892171e5a7cef1bc7a7/becker},
+  interhash = {6cec8f775a265d8741171d17e4a4e7d0},
+  intrahash = {2e7ac99cd30c4892171e5a7cef1bc7a7},
+  keywords = {inthesis diss markov chain decision process citedby:scholar:count:9594 citedby:scholar:timestamp:2017-4-7},
+  publisher = {John Wiley \& Sons},
+  timestamp = {2017-04-07T12:13:11.000+0200},
+  title = {Markov decision processes: discrete stochastic dynamic programming},
+  year = 2014
+}
+
+
+@article{reinforce,
+	title = {Simple statistical gradient-following algorithms for connectionist reinforcement learning},
+	volume = {8},
+	abstract = {This article presents a general class of associative reinforcement learning algorithms for connectionist networks containing stochastic units. These algorithms, called REINFORCE algorithms, are shown to make weight adjustments in a direction that lies along the gradient of expected reinforcement in both immediate-reinforcement tasks and certain limited forms of delayed-reinforcement tasks, and they do this without explicitly computing gradient estimates or even storing information from which such estimates could be computed. Specific examples of such algorithms are presented, some of which bear a close relationship to certain existing algorithms while others are novel but potentially interesting in their own right. Also given are results that show how such algorithms can be naturally integrated with backpropagation. We close with a brief discussion of a number of additional issues surrounding the use of such algorithms, including what is known about their limiting behaviors as well as further considerations that might be used to help develop similar but potentially more powerful reinforcement learning algorithms.},
+	number = {3},
+	journal = {Machine Learning},
+	author = {Williams, Ronald J.},
+	month = may,
+	year = {1992},
+	pages = {229--256}
+}
+
+
+@article{gpomdp,
+	title = {Infinite-horizon policy-gradient estimation},
+	volume = {15},
+	journal = {Journal of Artificial Intelligence Research},
+	author = {Baxter, Jonathan and Bartlett, Peter L.},
+	year = {2001},
+	pages = {319--350},
+	file = {live-806-1942-jair.pdf:/Users/emanueleghelfi/Zotero/storage/SGASJDDN/live-806-1942-jair.pdf:application/pdf}
+}
+
+
+@incollection{NIPS2012_4576,
+title = {A Unifying Perspective of Parametric Policy Search Methods for Markov Decision Processes},
+author = {Thomas Furmston and Barber, David},
+booktitle = {Advances in Neural Information Processing Systems 25},
+editor = {F. Pereira and C. J. C. Burges and L. Bottou and K. Q. Weinberger},
+pages = {2717--2725},
+year = {2012},
+publisher = {Curran Associates, Inc.}
+}
+
+
+@incollection{kakade_natural_2002,
+	title = {A {Natural} {Policy} {Gradient}},
+	urldate = {2018-03-22},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems} 14},
+	publisher = {MIT Press},
+	author = {Kakade, Sham M},
+	editor = {Dietterich, T. G. and Becker, S. and Ghahramani, Z.},
+	year = {2002},
+	pages = {1531--1538}
+}
+
+@inproceedings{Bagnell:2003:CPS:1630659.1630805,
+ author = {Bagnell, J. Andrew and Schneider, Jeff},
+ title = {Covariant Policy Search},
+ booktitle = {Proceedings of the 18th International Joint Conference on Artificial Intelligence},
+ series = {IJCAI'03},
+ year = {2003},
+ location = {Acapulco, Mexico},
+ pages = {1019--1024},
+ numpages = {6},
+ publisher = {Morgan Kaufmann Publishers Inc.},
+ address = {San Francisco, CA, USA},
+} 
+
+
+@article{amari_1998,
+ author = {Amari, Shun-Ichi},
+ title = {Natural Gradient Works Efficiently in Learning},
+ journal = {Neural Comput.},
+ issue_date = {Feb. 15, 1998},
+ volume = {10},
+ number = {2},
+ month = feb,
+ year = {1998},
+ issn = {0899-7667},
+ pages = {251--276},
+ numpages = {26},
+ url = {http://dx.doi.org/10.1162/089976698300017746},
+ doi = {10.1162/089976698300017746},
+ acmid = {287477},
+ publisher = {MIT Press},
+ address = {Cambridge, MA, USA},
+} 
+
+
+@ARTICLE{nonstatmdp,
+title = {A New Optimality Criterion for Nonhomogeneous Markov Decision Processes},
+author = {Hopp, Wallace J. and Bean, James C. and Smith, Robert L.},
+year = {1987},
+journal = {Operations Research},
+volume = {35},
+number = {6},
+pages = {875-883},
+abstract = {We propose a new definition of optimality for nonhomogeneous Markov decision processes called periodic forecast horizon (PFH) optimality. Using measures of discounting and ergodicity, we establish conditions under which PFH-optimal strategies exist and PFH optimality implies the more conventional notions of α-optimality and average optimality. Finally, we use this definition of optimality as the basis for a direct development of forecast horizon results for discounted and undiscounted nonhomogeneous Markov decision processes.},
+keywords = {118 computations for nonhomogeneous chains; 626 new optimality criterion},
+}
+
+@article{GARCIA2000304,
+title = {Solving Nonstationary Infinite Horizon Dynamic Optimization Problems},
+journal = {Journal of Mathematical Analysis and Applications},
+volume = {244},
+number = {2},
+pages = {304 - 317},
+year = {2000},
+author = {Alfredo Garcia and Robert L. Smith}
+}
+
+@article{Cheevaprawatdomrong:2007,
+ author = {Cheevaprawatdomrong, Torpong and Schochetman, Irwin E. and Smith, Robert L. and Garcia, Alfredo},
+ title = {Solution and Forecast Horizons for Infinite-Horizon Nonhomogeneous Markov Decision Processes},
+ journal = {Math. Oper. Res.},
+ issue_date = {February 2007},
+ volume = {32},
+ number = {1},
+ month = feb,
+ year = {2007},
+ pages = {51--72},
+ numpages = {22},
+ publisher = {INFORMS},
+ address = {Institute for Operations Research and the Management Sciences (INFORMS), Linthicum, Maryland, USA},
+ keywords = {monotone policy, planning horizon, well-posed problem},
+} 
+
+@article{nonstatmdp2,
+author = {Ghate, Archis and L. Smith, Robert},
+year = {2013},
+month = {04},
+pages = {413-425},
+title = {A Linear Programming Approach to Nonstationary Infinite-Horizon Markov Decision Processes},
+volume = {61},
+booktitle = {Operations Research}
+}
+
+
+@article{trpo,
+	title = {Trust {Region} {Policy} {Optimization}},
+	abstract = {We describe an iterative procedure for optimizing policies, with guaranteed monotonic improvement. By making several approximations to the theoretically-justified procedure, we develop a practical algorithm, called Trust Region Policy Optimization (TRPO). This algorithm is similar to natural policy gradient methods and is effective for optimizing large nonlinear policies such as neural networks. Our experiments demonstrate its robust performance on a wide variety of tasks: learning simulated robotic swimming, hopping, and walking gaits; and playing Atari games using images of the screen as input. Despite its approximations that deviate from the theory, TRPO tends to give monotonic improvement, with little tuning of hyperparameters.},
+	journal = {arXiv:1502.05477 [cs]},
+	author = {Schulman, John and Levine, Sergey and Moritz, Philipp and Jordan, Michael I. and Abbeel, Pieter},
+	month = feb,
+	year = {2015},
+	keywords = {Computer Science - Learning},
+	annote = {Comment: 16 pages, ICML 2015},
+}
+
+
+@article{ppo,
+	title = {Proximal {Policy} {Optimization} {Algorithms}},
+	abstract = {We propose a new family of policy gradient methods for reinforcement learning, which alternate between sampling data through interaction with the environment, and optimizing a "surrogate" objective function using stochastic gradient ascent. Whereas standard policy gradient methods perform one gradient update per data sample, we propose a novel objective function that enables multiple epochs of minibatch updates. The new methods, which we call proximal policy optimization (PPO), have some of the benefits of trust region policy optimization (TRPO), but they are much simpler to implement, more general, and have better sample complexity (empirically). Our experiments test PPO on a collection of benchmark tasks, including simulated robotic locomotion and Atari game playing, and we show that PPO outperforms other online policy gradient methods, and overall strikes a favorable balance between sample complexity, simplicity, and wall-time.},
+	urldate = {2018-04-12},
+	journal = {arXiv:1707.06347 [cs]},
+	author = {Schulman, John and Wolski, Filip and Dhariwal, Prafulla and Radford, Alec and Klimov, Oleg},
+	month = jul,
+	year = {2017},
+	note = {arXiv: 1707.06347},
+	keywords = {Computer Science - Learning},
+}
+
+@article{rl-robotics,
+author = {Jens Kober and J. Andrew Bagnell and Jan Peters},
+title ={Reinforcement learning in robotics: A survey},
+journal = {The International Journal of Robotics Research},
+volume = {32},
+number = {11},
+pages = {1238-1274},
+year = {2013}
+}
+
+@article{rl-finance,
+author = {Moody, John and Wu, Lizhong and Liao, Yuansong and Saffell, Matthew},
+year = {1998},
+month = {09},
+pages = {441-470},
+title = {Performance functions and reinforcement learning for trading systems and portfolios},
+volume = {17},
+journal = {Appears in Journal of Forecasting},
+doi = {10.1002/(SICI)1099-131X(1998090)17:5/63.0.CO;2-#}
+}
+
+@article{rl-atari-1,
+  author    = {Volodymyr Mnih and
+               Koray Kavukcuoglu and
+               David Silver and
+               Alex Graves and
+               Ioannis Antonoglou and
+               Daan Wierstra and
+               Martin A. Riedmiller},
+  title     = {Playing Atari with Deep Reinforcement Learning},
+  journal   = {CoRR},
+  volume    = {abs/1312.5602},
+  year      = {2013},
+  url       = {http://arxiv.org/abs/1312.5602},
+  archivePrefix = {arXiv},
+  eprint    = {1312.5602},
+  timestamp = {Mon, 13 Aug 2018 16:47:42 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/MnihKSGAWR13},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+
+@article{rl-atari-2,
+	Author = {Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Rusu, Andrei A. and Veness, Joel and Bellemare, Marc G. and Graves, Alex and Riedmiller, Martin and Fidjeland, Andreas K. and Ostrovski, Georg and Petersen, Stig and Beattie, Charles and Sadik, Amir and Antonoglou, Ioannis and King, Helen and Kumaran, Dharshan and Wierstra, Daan and Legg, Shane and Hassabis, Demis},
+	Date = {2015/02/25/online},
+	Date-Added = {2018-11-06 15:48:28 +0000},
+	Date-Modified = {2018-11-06 15:48:28 +0000},
+	Day = {25},
+	Journal = {Nature},
+	L3 = {10.1038/nature14236; https://www.nature.com/articles/nature14236#supplementary-information},
+	Month = {02},
+	Pages = {529 EP  -},
+	Publisher = {Nature Publishing Group, a division of Macmillan Publishers Limited. All Rights Reserved. SN  -},
+	Title = {Human-level control through deep reinforcement learning},
+	Ty = {JOUR},
+	Url = {https://doi.org/10.1038/nature14236},
+	Volume = {518},
+	Year = {2015},
+	Bdsk-Url-1 = {https://doi.org/10.1038/nature14236}
+}
+
+@article{rl-atari-3,
+  author    = {Timothy P. Lillicrap and
+               Jonathan J. Hunt and
+               Alexander Pritzel and
+               Nicolas Heess and
+               Tom Erez and
+               Yuval Tassa and
+               David Silver and
+               Daan Wierstra},
+  title     = {Continuous control with deep reinforcement learning},
+  journal   = {CoRR},
+  volume    = {abs/1509.02971},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1509.02971},
+  archivePrefix = {arXiv},
+  eprint    = {1509.02971},
+  timestamp = {Mon, 13 Aug 2018 16:46:11 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/LillicrapHPHETS15},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+@article{alpha-zero,
+	Author = {Silver, David and Schrittwieser, Julian and Simonyan, Karen and Antonoglou, Ioannis and Huang, Aja and Guez, Arthur and Hubert, Thomas and Baker, Lucas and Lai, Matthew and Bolton, Adrian and Chen, Yutian and Lillicrap, Timothy and Hui, Fan and Sifre, Laurent and van den Driessche, George and Graepel, Thore and Hassabis, Demis},
+	Date = {2017/10/18/online},
+	Date-Added = {2018-11-06 15:51:38 +0000},
+	Date-Modified = {2018-11-06 15:51:38 +0000},
+	Day = {18},
+	Journal = {Nature},
+	L3 = {10.1038/nature24270; https://www.nature.com/articles/nature24270#supplementary-information},
+	M3 = {Article},
+	Month = {10},
+	Pages = {354 EP  -},
+	Publisher = {Macmillan Publishers Limited, part of Springer Nature. All rights reserved. SN  -},
+	Title = {Mastering the game of Go without human knowledge},
+	Ty = {JOUR},
+	Url = {https://doi.org/10.1038/nature24270},
+	Volume = {550},
+	Year = {2017},
+	Bdsk-Url-1 = {https://doi.org/10.1038/nature24270}}
+	
+	
+	
+@article{alpha-go,
+	Author = {Silver, David and Huang, Aja and Maddison, Chris J. and Guez, Arthur and Sifre, Laurent and van den Driessche, George and Schrittwieser, Julian and Antonoglou, Ioannis and Panneershelvam, Veda and Lanctot, Marc and Dieleman, Sander and Grewe, Dominik and Nham, John and Kalchbrenner, Nal and Sutskever, Ilya and Lillicrap, Timothy and Leach, Madeleine and Kavukcuoglu, Koray and Graepel, Thore and Hassabis, Demis},
+	Date = {2016/01/27/online},
+	Date-Added = {2018-11-06 15:53:04 +0000},
+	Date-Modified = {2018-11-06 15:53:04 +0000},
+	Day = {27},
+	Journal = {Nature},
+	L3 = {10.1038/nature16961; https://www.nature.com/articles/nature16961#supplementary-information},
+	M3 = {Article},
+	Month = {01},
+	Pages = {484 EP  -},
+	Publisher = {Nature Publishing Group, a division of Macmillan Publishers Limited. All Rights Reserved. SN  -},
+	Title = {Mastering the game of Go with deep neural networks and tree search},
+	Ty = {JOUR},
+	Url = {https://doi.org/10.1038/nature16961},
+	Volume = {529},
+	Year = {2016},
+	Bdsk-Url-1 = {https://doi.org/10.1038/nature16961}}
+	
+	
+@incollection{cortes2010,
+title = {Learning Bounds for Importance Weighting},
+author = {Cortes, Corinna and Mansour, Yishay and Mohri, Mehryar},
+booktitle = {Advances in Neural Information Processing Systems 23},
+editor = {J. D. Lafferty and C. K. I. Williams and J. Shawe-Taylor and R. S. Zemel and A. Culotta},
+pages = {442--450},
+year = {2010},
+publisher = {Curran Associates, Inc.},
+url = {http://papers.nips.cc/paper/4156-learning-bounds-for-importance-weighting.pdf}
+}
+
+@article{nac,
+  title = {Natural Actor-Critic},
+  author = {Peters, J. and Schaal, S.},
+  journal = {Neurocomputing},
+  volume = {71},
+  number = {7-9},
+  pages = {1180-1190},
+  organization = {Max-Planck-Gesellschaft},
+  school = {Biologische Kybernetik},
+  month = mar,
+  year = {2008},
+  month_numeric = {3}
+}
+
+@book{mohri2012foundations,
+    title = {Foundations of Machine Learning},
+    author = {Mohri, M. and Rostamizadeh, A. and Talwalkar, A.},
+    isbn = {9780262018258},
+    lccn = {2012007249},
+    series = {Adaptive computation and machine learning series},
+    year = {2012},
+    publisher = {MIT Press},
+    keywords = {book.ml,ebook,perceptron},
+    url = {http://books.google.com.tr/books?id=maz6AQAAQBAJ,/bib/mohri/mohri2012foundations/Foundations_of_Machine_Learning.pdf},
+}
+
+@misc{TORCS,
+author = {Bernhard Wymann, Eric Espi{\'e}, Christophe Guionneau, Christos Dimitrakakis, R{\'e}mi Coulom, Andrew Sumner},
+howpublished = {http://www.torcs.org},
+title = {{TORCS}, {T}he {O}pen {R}acing {C}ar {S}imulator},
+year = {2013}
+}
+
+@INPROCEEDINGS{torcs-1, 
+author={D. Loiacono and A. Prete and P. L. Lanzi and L. Cardamone}, 
+booktitle={IEEE Congress on Evolutionary Computation}, 
+title={Learning to overtake in TORCS using simple reinforcement learning}, 
+year={2010}, 
+volume={}, 
+number={}, 
+pages={1-8}, 
+keywords={computer games;learning (artificial intelligence);programming;public domain software;TORCS;reinforcement learning;programming;nonplayer characters;sophisticated behavior;computational intelligence;behavior-based architecture;The Open Racing Car Simulator;open source racing game;advanced braking policy;Q-learning;dynamically changing game situation;Driver circuits;Trajectory;Aerodynamics;Games;Sensors;Learning;Computational modeling}, 
+doi={10.1109/CEC.2010.5586191}, 
+ISSN={1089-778X}, 
+month={July},}
+
+@article{torcs-2,
+  author    = {Timothy P. Lillicrap and
+               Jonathan J. Hunt and
+               Alexander Pritzel and
+               Nicolas Heess and
+               Tom Erez and
+               Yuval Tassa and
+               David Silver and
+               Daan Wierstra},
+  title     = {Continuous control with deep reinforcement learning},
+  journal   = {CoRR},
+  volume    = {abs/1509.02971},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1509.02971},
+  archivePrefix = {arXiv},
+  eprint    = {1509.02971},
+  timestamp = {Mon, 13 Aug 2018 16:46:11 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/LillicrapHPHETS15},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{torcs-3,
+ author = {Koutn\'{\i}k, Jan and Cuccu, Giuseppe and Schmidhuber, J\"{u}rgen and Gomez, Faustino},
+ title = {Evolving Large-scale Neural Networks for Vision-based Reinforcement Learning},
+ booktitle = {Proceedings of the 15th Annual Conference on Genetic and Evolutionary Computation},
+ series = {GECCO '13},
+ year = {2013},
+ isbn = {978-1-4503-1963-8},
+ location = {Amsterdam, The Netherlands},
+ pages = {1061--1068},
+ numpages = {8},
+ url = {http://doi.acm.org/10.1145/2463372.2463509},
+ doi = {10.1145/2463372.2463509},
+ acmid = {2463509},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {computer vision, neuroevolution, recurrent neural networks, reinforcement learning},
+} 
+
+@InProceedings{torcs-4,
+  title = 	 {Asynchronous Methods for Deep Reinforcement Learning},
+  author = 	 {Volodymyr Mnih and Adria Puigdomenech Badia and Mehdi Mirza and Alex Graves and Timothy Lillicrap and Tim Harley and David Silver and Koray Kavukcuoglu},
+  booktitle = 	 {Proceedings of The 33rd International Conference on Machine Learning},
+  pages = 	 {1928--1937},
+  year = 	 {2016},
+  editor = 	 {Maria Florina Balcan and Kilian Q. Weinberger},
+  volume = 	 {48},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {New York, New York, USA},
+  month = 	 {20--22 Jun},
+  publisher = 	 {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v48/mniha16.pdf},
+  url = 	 {http://proceedings.mlr.press/v48/mniha16.html},
+}
+
+
+@article{PETERS2008682,
+title = {Reinforcement learning of motor skills with policy gradients},
+journal = {Neural Networks},
+volume = {21},
+number = {4},
+pages = {682 - 697},
+year = {2008},
+note = {Robotics and Neuroscience},
+issn = {0893-6080},
+doi = {https://doi.org/10.1016/j.neunet.2008.02.003},
+url = {http://www.sciencedirect.com/science/article/pii/S0893608008000701},
+author = {Jan Peters and Stefan Schaal},
+keywords = {Reinforcement learning, Policy gradient methods, Natural gradients, Natural Actor-Critic, Motor skills, Motor primitives}
+}
+
+
+@article{metellipolicy2018,
+	title = {Policy {Optimization} via {Importance} {Sampling}},
+	urldate = {2018-11-18},
+	journal = {arXiv:1809.06098 [cs, stat]},
+	author = {Metelli, Alberto Maria and Papini, Matteo and Faccio, Francesco and Restelli, Marcello},
+	month = sep,
+	year = {2018},
+	note = {arXiv: 1809.06098},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning, Statistics - Machine Learning}
+}
+
+@inproceedings{renyi1961,
+address = {Berkeley, Calif.},
+author = {Rényi, Alfréd},
+booktitle = {Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability, Volume 1: Contributions to the Theory of Statistics},
+pages = {547--561},
+publisher = {University of California Press},
+title = {On Measures of Entropy and Information},
+url = {https://projecteuclid.org/euclid.bsmsp/1200512181},
+year = {1961}
+}
+
+@article{DBLP:journals/corr/abs-1206-2459,
+  author    = {Van~Erven, Tim and
+               Harremos, Peter},
+  title     = {R{\'{e}}nyi Divergence and Kullback-Leibler Divergence},
+  journal   = {CoRR},
+  volume    = {abs/1206.2459},
+  year      = {2012},
+  url       = {http://arxiv.org/abs/1206.2459},
+  archivePrefix = {arXiv},
+  eprint    = {1206.2459},
+  timestamp = {Mon, 13 Aug 2018 16:48:16 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1206-2459},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+
+
+
+
+
+

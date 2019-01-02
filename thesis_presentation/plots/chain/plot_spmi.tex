@@ -1,0 +1,136 @@
+\documentclass{standalone}
+\usepackage{pgfplots, pgfplotstable}
+\usepgfplotslibrary{fillbetween}
+\usepackage{graphics}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.10}
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+
+\pgfplotstableread[col sep = semicolon]{./spmi/spmi_small.csv}\spmi
+\pgfplotstableread[col sep = semicolon]{./spmi/spmi_sup_small.csv}\spmisup
+\pgfplotstableread[col sep = semicolon]{./spmi/spmi_alt_small.csv}\spmialt
+\pgfplotstableread[col sep = semicolon]{./spmi/spi_smi_small.csv}\spismi
+\pgfplotstableread[col sep = semicolon]{./spmi/smi_spi_small.csv}\smispi
+
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1,
+				  				horizontal sep=2cm,
+				  				vertical sep=2cm,
+				  				group name=myplot}]
+
+\nextgroupplot[
+      legend pos=outer north east,
+      legend style={font=\tiny},
+      axis lines=middle,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      ylabel near ticks,
+      xlabel near ticks,  
+      grid style=dashed,    
+      xlabel={Iteration},
+      ylabel={Average Reward},
+      xmin=0, xmax=10000,
+      ymin=0, ymax=12,
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+	},
+	scaled x ticks=base 10:-3
+    ]
+    
+     \addplot[color=red, thick] table[x = iterations, y = average_reward]{\spmi};\label{plots:spmi}
+    \addplot[color=green, thick, dashdotted] table[x = iterations, y = average_reward]{\spmialt};\label{plots:spmialt}
+    \addplot[color=blue, thick, dashed] table[x = iterations, y = average_reward]{\spmisup};\label{plots:spmisup}
+    \addplot[color=orange, thick] table[x = iterations, y = average_reward]{\spismi}; \label{plots:spismi}
+    \addplot[color=violet, thick] table[x = iterations, y = average_reward]{\smispi};\label{plots:smispi}
+    
+    
+     \draw [thick, dotted] (axis cs: 0,10) -- (axis cs: 10000,10);
+    % absolute in pgfplots coordinates
+    \node[] at (axis cs: 2000,11) {\small $J(\pi^*,P^*)$};
+
+   \nextgroupplot[
+      xmin=0, xmax=10000,
+      ymin=-0.2, ymax=1,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      legend style={font=\tiny},
+      legend pos=north east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,  
+      grid style=dashed,    
+      xlabel=Iteration,
+      ylabel=$\omega$,
+      axis x line*=bottom,
+      axis y line*=left,
+      scaled x ticks=base 10:-3
+    ]
+    
+    
+   \addplot[color=red, thick] table[x = iterations, y = w_current_0]{\spmi};
+    \addplot[color=green, thick, dashdotted] table[x = iterations, y = w_current_0]{\spmialt};
+    \addplot[color=blue, thick, dashed] table[x = iterations, y = w_current_0]{\spmisup};
+    \addplot[color=orange, thick] table[x = iterations, y = w_current_0]{\spismi};
+    \addplot[color=violet, thick] table[x = iterations, y = w_current_0]{\smispi};
+    
+        
+      \draw [very thick,dotted] (axis cs: 0,0) -- (axis cs: 10000,0);
+    % absolute in pgfplots coordinates
+    \node[] at (axis cs: 1000,-0.1) {\small $\omega^*$};
+   \nextgroupplot[
+      legend pos=outer north east,
+      legend style={font=\tiny},
+      axis x line*=bottom,
+      axis y line*=left,
+      axis lines=middle,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      ylabel near ticks,
+      grid style=dashed,
+      xlabel near ticks,      
+      xlabel={Iteration},
+      ylabel={$\theta$},
+      xmin=0, xmax=10000,
+      ymin=0, ymax=1.1,
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+	},
+	scaled x ticks=base 10:-3
+    ]
+    
+    \addplot[color=red, thick] table[x = iterations, y = theta_current_0]{\spmi};
+    \addplot[color=green, thick, dashdotted] table[x = iterations, y = theta_current_0]{\spmialt};
+    \addplot[color=blue, thick, dashed] table[x = iterations, y = theta_current_0]{\spmisup};
+   \addplot[color=orange, thick] table[x = iterations, y = theta_current_0]{\spismi};
+   \addplot[color=violet
+   , thick] table[x = iterations, y = theta_current_0]{\smispi};
+    
+       
+      \draw [very thick,dotted] (axis cs: 0,1) -- (axis cs: 10000,1);
+    % absolute in pgfplots coordinates
+    \node[] at (axis cs: 1000,1.05) {\small $\theta^*$};
+\end{groupplot}
+\path (myplot c3r1.south west|-current bounding box.south)--
+      			coordinate(legendpos)
+      			(myplot c2r1.south west|-current bounding box.south);
+			\matrix[matrix of nodes,
+    				anchor=north,
+    				inner sep=0.4em,
+    				draw=none
+  					]at([yshift=1ex]legendpos)
+  					{ 	
+						\ref{plots:spmi}& SPMI &
+    					\ref{plots:spmialt}& SPMI-alt &
+    					\ref{plots:spmisup}& SPMI-sup &
+    					\ref{plots:smispi}& SMI-SPI&
+    					\ref{plots:spismi}& SPI-SMI\\	
+    					};
+
+\end{tikzpicture}
+\end{document}

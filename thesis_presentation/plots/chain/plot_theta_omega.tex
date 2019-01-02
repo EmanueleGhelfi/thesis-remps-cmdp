@@ -1,0 +1,77 @@
+\documentclass{standalone} 
+\usepackage{pgfplots, pgfplotstable}
+\usepgfplotslibrary{fillbetween}
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./data/ciREMPS_chain_eps-0.1.csv}\chainepsminusone
+\pgfplotstableread[col sep = comma]{./data/gpomdp/gpomdp.csv}\gpomdp
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+      xmin=0, xmax=1,
+      ymin=0, ymax=1,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      legend style={font=\tiny},
+      grid style=dashed,
+      legend pos=north east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel=$\theta$,
+      ylabel=$\omega$,
+    ]
+    
+     \addplot[color=black]
+    table[x=Theta_mean, 
+          y=Omega_mean]{\chainepsminusone};
+     \addlegendentry{REMPS}
+     
+    % std
+    \addplot[name path=bot1, color=black!30, no markers, smooth, forget plot]
+    table[x = Theta_sup,
+    y = Omega_sup]{\chainepsminusone};
+    
+    % std
+    \addplot[name path=top1, color=black!30, no markers, smooth, forget plot]
+    table[x = Theta_low,
+    y = Omega_low]{\chainepsminusone};
+    
+     % fill
+    \addplot[black!10, forget plot] fill between[of=top1 and bot1];
+
+
+%%%%%%%%%%%%%% GPOMDP %%%%%%%%%%%%%%%%%
+    \addplot[color=violet]
+    table[x=Theta_mean, 
+          y=Omega_mean]{\gpomdp};
+     \addlegendentry{GPOMDP}
+     
+    % std y
+    \addplot[name path=bot2, color=violet!30, no markers, smooth, forget plot]
+    table[x = Theta_sup,
+    y = Omega_sup]{\gpomdp};
+    
+    % std y
+    \addplot[name path=top2, color=violet!30, no markers, smooth, forget plot]
+    table[x = Theta_low,
+    y = Omega_low]{\gpomdp};
+    
+     % fill
+    \addplot[violet!10, forget plot] fill between[of=top2 and bot2];
+        
+     
+     %%%%%%%%%%%%%%%%% LABELS ON PLOT %%%%%%%%%%%%%%%%%
+     % absolute in pgfplots coordinates
+    \node[] at (axis cs: 0.3,0.85) {\small $(\theta_0,\omega_0)$};
+    
+    % absolute in pgfplots coordinates
+    \node[] at (axis cs: 0.8,0.05) {\small $(\theta^*,\omega^*)$};
+    
+    \draw[->](axis cs: 0.88,0.04)--(axis cs: 0.96,0.01);
+
+\end{axis}	
+\end{tikzpicture}
+\end{document}

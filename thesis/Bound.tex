@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage[dvips]{graphicx}
+\usepackage{tabularx}
+\usepackage{subfigure}
+\usepackage{afterpage}
+\usepackage{amsmath,amssymb} 
+\usepackage{amsthm} %theorems, definition      
+\usepackage{rotating}  
+\usepackage{fancyhdr}
+% list without bullets  
+\usepackage{enumitem}  
+\usepackage[scriptsize]{caption} 
+\hyphenation{a-gen-tiz-za-zio-ne}
+%\usepackage{csquotes}
+\usepackage[round]{natbib}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{afterpage}
+\usepackage{amsmath,amssymb}   
+\usepackage{rotating}  
+\usepackage{fancyhdr}  
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+\usepackage[textsize=tiny]{todonotes}
+\usepackage{etoolbox}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{times}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{capt-of}
+\usepackage{emptypage}
+\usepackage{multicol}
+\usepackage[acronym]{glossaries}
+\usepackage{booktabs}       % professional-quality tables
+\AtBeginEnvironment{proof}{\small}
+\allowdisplaybreaks[4]
+\hyphenation{a-gen-tiz-za-zio-ne}
+\usepackage{xspace}    
+\usepackage{cleveref} %easy references   
+
+\begin{document}
+\title{Finite Time Bound for REPS}
+\maketitle
+
+\section{REMPS}
+
+Consider the following linear program (REMPS):
+
+\begin{align*}
+\text{maximize}_{p} \; & \sum_{s,a,s'} p(s,a,s') r(s,a,s') \\
+\text{s.t.} \; & D_{KL}(p || q) < \epsilon
+\end{align*}
+
+We have $p$ that is the solution of the above program and $\hat{p}$ that is the approximated solution using N samples.
+
+We want to obtain:
+
+\begin{equation}
+	\mid J_p - J_{\hat{p}} \mid \leq B(N,\epsilon)
+\end{equation}
+
+\begin{align*}
+J_p &= \int_{S,A,S} p(s,a,s') r(s,a,s') \\
+J_{\hat{p}} &= \int_{S,A,S} \hat{p}(s,a,s') r(s,a,s') \\
+\mid J_p - J_{\hat{p}} \mid &= \int_{S,A,S} (p(s,a,s') - \hat{p}(s,a,s'))r(s,a,s')
+\end{align*}
+
+
+\end{document}

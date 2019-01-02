@@ -1,0 +1,226 @@
+\documentclass[11pt,a4paper,twoside,openright]{report}
+
+\usepackage[dvips]{graphicx}
+\usepackage{xpatch}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{enumerate}
+\usepackage{times}
+\usepackage{float}
+\usepackage{afterpage}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs,amsfonts,dsfont}    
+\usepackage{rotating}  
+\usepackage{fancyhdr}
+% list without bullets  
+\usepackage[inline]{enumitem}  
+\usepackage{caption} 
+\hyphenation{a-gen-tiz-za-zio-ne}
+%\usepackage{csquotes}
+\usepackage[round]{natbib}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{afterpage}
+\usepackage{amsmath,amssymb}   
+\usepackage{rotating}  
+\usepackage{fancyhdr}  
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+\usepackage{mathtools}
+\usepackage{wrapfig}
+\usepackage[textsize=tiny]{todonotes}
+\usepackage{etoolbox}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+%%%%%%%%%%%%%%%%%%%%%%% ALGORITHM COMMAND %%%%%%%%%%%%%%%%%
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+%%%%%%%%%%%%%%%%%%%% END ALGORITHM %%%%%%%%%%%%%%%%%%%
+\usepackage{times}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{capt-of}
+\usepackage{emptypage}
+\usepackage{multicol}
+\usepackage[acronym]{glossaries}
+\usepackage{booktabs}       % professional-quality tables
+\AtBeginEnvironment{proof}{\small}
+\allowdisplaybreaks[4]
+\hyphenation{a-gen-tiz-za-zio-ne}
+\hyphenation{pre-sta-zio-ne}
+\hyphenation{am-bien-te}
+\usepackage{xspace}    
+\usepackage[capitalise]{cleveref} %easy references  
+% nomenclature
+\usepackage{nomencl}  
+\makenomenclature    
+\renewcommand{\nomname}{Notation}
+\renewcommand{\nompreamble}{Column vectors are denoted by bold, lowercase letter (e.g. $\boldsymbol{x}$). The notation  $\boldsymbol{x}^T$ is for row vectors. Matrices are denoted by bold, uppercase letters (e.g. $\boldsymbol{M}$).}
+
+\newcommand{\remps}{$\mathrm{REMPS}$\xspace}
+\newcommand{\rempstilde}{$\widetilde{\mathrm{REMPS}}$\xspace}
+
+                                                  
+\DeclareRobustCommand{\eg}{e.g.,\@\xspace}                               
+\DeclareRobustCommand{\ie}{i.e.,\@\xspace}                              
+\DeclareRobustCommand{\wrt}{w.r.t.\@\xspace}                             
+\DeclareRobustCommand{\wp}{w.p.\@\xspace}
+\DeclareRobustCommand{\quotes}[1]{``#1''}
+
+\DeclareRobustCommand{\remps}{REMPS\@\xspace}
+\DeclareRobustCommand{\rempskappa}[1]{$\text{REMPS}_{P,\pi}(#1)$\@\xspace}
+\DeclareRobustCommand{\rempskappahat}[1]{$\widetilde{\text{REMPS}}_{P,\pi}(#1)$\@\xspace}
+\DeclareRobustCommand{\opt}[1]{$\text{OPT}_{P,\pi}(#1)$\@\xspace}
+\DeclareRobustCommand{\opthat}[1]{$\widetilde{\text{OPT}}_{P,\pi}(#1)$\@\xspace}
+\DeclareRobustCommand{\dual}[1]{$\text{DUAL}_{P,\pi}(#1)$\@\xspace}
+\DeclareRobustCommand{\dualhat}[1]{$\widetilde{\text{DUAL}}_{P,\pi}(#1)$\@\xspace}
+\DeclareRobustCommand{\proj}[1]{$\text{PROJ}_{D_{\mathcal{P},\Pi}}(#1)$\@\xspace}
+\DeclareRobustCommand{\projhat}[1]{$\widetilde{\text{PROJ}}_{D_{\mathcal{P},\Pi}}(#1)$\@\xspace}
+\DeclareRobustCommand{\kl}{D_{\mathrm{KL}}}
+\newcommand{\ev}{\mathop{\mathbb{E}}}
+\newcommand{\Renyi}{R\'{e}nyi }
+\newcommand{\de}{\,\mathrm{d}}
+\newcommand{\vtheta}{\mathbr{\theta}}
+\newcommand{\vrho}{\mathbr{\rho}}
+\newcommand{\vmu}{\mathbr{\mu}}
+\newcommand{\vsigma}{\mathbr{\sigma}}
+\newcommand{\gradHyJ}{\nabla_{\vrho}J(\vrho)}
+\newcommand{\hyscore}[1][\vtheta]{\nabla_{\vrho}\log\nu_{\vrho}(#1)}
+\newcommand{\hyscoreprime}[1][\vtheta]{\nabla_{\vrho'}\log\nu_{\vrho'}}
+\newcommand{\gradHyJApp}{\widehat{\nabla}_{\vrho}J(\vrho)}
+\newcommand{\gradHyJAppPrime}{\widehat{\nabla}_{\vrho'}J(\vrho')}
+
+
+%\setlength{\paperwidth}{16cm}
+%\setlength{\paperheight}{24cm}
+%\setlength{\oddsidemargin} {2. cm}
+%\setlength{\evensidemargin} {2. cm}
+%\addtolength{\oddsidemargin} {-0.4 cm}
+%\addtolength{\evensidemargin} {-0.4 cm}
+%\linespread{1.1}
+
+\usepackage{geometry}    % Da rivedere
+\geometry{
+  inner=37.125mm,
+  outer=33.4125mm,
+  top=37.125mm,
+  bottom=37.125mm,
+  heightrounded,
+  marginparwidth=51pt,
+  marginparsep=17pt,
+  headsep=24pt,
+}
+\setlength\parindent{0cm}
+\setlength\parskip{1em}
+\def\labelitemi{--}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\renewcommand{\captionfont}{\small}
+
+% definition environment
+\newtheorem{definition}{Definition}[section]
+
+\newtheoremstyle{dotless}{}{}{\itshape}{}{\bfseries}{}{ }{}
+
+%% remove dot after theorem title
+\theoremstyle{dotless}
+% theorem environment
+\newtheorem{theorem}{Theorem}[section]
+
+% theorem environment
+\newtheorem*{theorem*}{Theorem}
+
+\newtheorem{defi}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{ass}{Assumption}[section]
+\newtheorem{coroll}{Corollary}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+% vector norm
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\sas}{\int_\mathcal{S} \int_\mathcal{A} \int_\mathcal{S}}
+\usepackage{bm}
+\newcommand{\mathbr}[1]{\bm{\mathbf{#1}}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\pagestyle{empty}
+
+\begin{document}
+\include{frontespizio}
+
+
+\thispagestyle{empty} \normalfont \cleardoublepage
+\include{dedica}
+\thispagestyle{empty}  \cleardoublepage
+\pagenumbering{Roman}
+\include{sommario}
+\thispagestyle{empty} \vspace*{.75truecm} \cleardoublepage
+\include{ringraziamenti}
+\thispagestyle{empty} \vspace*{.75truecm} \normalfont \cleardoublepage
+\pagestyle{plain}\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}} 
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}         
+\fancyhead[LE,RO]{\bfseries\thepage}    
+                                        
+\fancyhead[RE]{\nouppercase{\bfseries\leftmark}}    
+\fancyhead[LO]{\nouppercase{\bfseries\rightmark}}     
+\renewcommand{\headrulewidth}{0.2pt} 
+
+\include{notation}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\listofalgorithms
+\newpage
+\pagenumbering{arabic}
+\pagestyle{fancy} \normalfont
+% remove footer
+\cfoot{}
+\include{capitolo1}
+\include{capitolo2}
+\include{capitolo3}
+\include{capitolo4}
+\include{capitolo5}
+\include{capitolo6}
+
+\cleardoublepage
+% ---- Bibliography ----
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{mydinat}
+\bibliography{bibl_tesi}
+
+%\nocite{*}
+
+\appendix
+
+\pagestyle{fancy} 
+\fancyfoot{}                                               
+\renewcommand{\chaptermark}[1]{\markboth{\appendixname\ \thechapter.\ #1}{}} 
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}         
+\fancyhead[LE,RO]{\bfseries\thepage}    
+                                        
+\fancyhead[RE]{\bfseries\leftmark}    
+\fancyhead[LO]{\bfseries\rightmark}     
+\renewcommand{\headrulewidth}{0.3pt} 
+
+\include{LPproof}
+\include{cmdp_gpomdp_rf}
+\include{remps_proof}
+
+
+\end{document}
+
+
+
+
+
+
+

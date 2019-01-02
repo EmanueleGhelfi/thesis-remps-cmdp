@@ -1,0 +1,25 @@
+\chapter{Discussion and Conclusions}
+\label{capitolo7}
+\thispagestyle{empty}
+\vspace{0.5cm}
+
+\noindent In this chapter, we discuss the main contribution of this thesis, and we propose some possible future extensions and refinement of the approaches presented in this work. 
+The first contribution of this document is a new algorithm, namely \textbf{REMPS}, able to solve the model-policy learning problem in the context of CMDPs. 
+REMPS is an extension of REPS \citep{reps} that considers also the model optimization. Along with REMPS we present three types of policy and model projection strategies in order to deal with limited representation power. 
+REMPS is able to work with continuous state and action spaces, moreover it does not require the knowledge of the full transition model, requiring only an approximation.
+\paragraph{}
+We presented a theoretical study of the property of the algorithm, providing a lower bound to the difference between the performance of the solution found using an infinite number of sample and infinite representation power and the solution using a finite number of samples and finite representation power. We showed that this bound depends on the number of samples, on the representation power of the model and policy spaces and on the value of the KL--constraint $\epsilon$. \newline
+\paragraph{}
+Along with a theoretical study of the algorithm, we presented also an empirical evaluation. We tested our algorithm on three domains. The first domain (chain problem) is a proof of concept showing the ability of REMPS to overcome local minima. The second domain (cart-pole) is a standard RL benchmark with continuous action space, discrete action space. We used cart-pole to test the performances in both the exact model and in the approximated model scenarios. The last experiment is a complex experiment of autonomous driving and configuration using the TORCS environment.
+In our experiments we showed the benefits of model configuration and the benefits of using an information theoretical approach with respect to a gradient method such as G(PO)MDP.
+\paragraph{}
+We outline some possible extensions and research directions.
+\paragraph{Adaptive $\epsilon$}
+The $\epsilon$ parameter in the KL constraint is critical since it is responsible for the magnitude of the update. A high value of $\epsilon$ results in too large model-policy updates, while a too small $\epsilon$ results in no updates at all. An optimal value for $\epsilon$ can be found using heuristics or using a principled way, optimizing some utility function.
+\paragraph{Other divergences}
+REMPS (and REPS) algorithm is based on the KL divergence. The usage of this kind of distance is justified by the closed form solution of the learning problem. However the KL distance has some problems. The first problem is that it is not symmetric, so after the model-policy projection we have no clue on the distance from the projected model and policy to the ones used for sampling. Moreover the use of KL distance requires the policy to be stochastic, since the KL between two deterministic policy is $0$ or $\infty$. 
+An interesting extension of our algorithm could use different types of distance, i.e. Rényi divergence, Hellinger or Weisserstein. We highlight the fact that using the Total Variation distance it is not possible to solve the REMPS optimization problem in closed form.
+\paragraph{Policy Space Identification}
+The presented approach to the CMDP learning problem is a joint approach, in which the supervisor and the agent are the same entity. In a realistic case the two entity can be different, i.e. an F1 pilot and a mechanical engineer. In these cases it can be beneficial to split the policy learning and the model learning. The agent should be freely allowed to learn using some strategy, the supervisor should study the agent behaviour proposing for each episode the best (according to some utility measure) environment configuration. In order to do this the supervisor should know the agent's policy space. However, in realistic cases the policy can be unknown. In these scenarios the supervisor should identify the policy space of the agent and perform optimizations using this approximation.
+\paragraph{Finite--Time Analysis}
+In our theoretical analysis we derived a bound valid for a single step of REMPS. An interesting theoretical extension would be an analysis for multiple steps of REMPS obtaining a bound on $J_{d^{(T)}} - J_{\widetilde{d}^{(T)}}$, where $d^{(T)}$ is the distribution obtained using infinite samples after T step of optimization and $\widetilde{d}^{(T)}$ is the solution obtained with $N$ samples with limited capacity on the model and policy selection.

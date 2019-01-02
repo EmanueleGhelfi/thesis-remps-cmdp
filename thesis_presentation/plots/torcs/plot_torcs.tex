@@ -1,0 +1,113 @@
+\documentclass{standalone}
+\usepackage{pgfplots, pgfplotstable}
+\usepgfplotslibrary{fillbetween}
+\usepackage{graphics}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.10}
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+
+\pgfplotstableread[col sep = comma]{remps_small.csv}\remps
+\pgfplotstableread[col sep = comma]{reps_small.csv}\reps
+
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1,
+				  				horizontal sep=2cm,
+				  				vertical sep=2cm,
+				  				group name=myplot}]
+
+\nextgroupplot[
+      legend pos=outer north east,
+      legend style={font=\tiny},
+      axis lines=middle,
+      axis x line*=bottom,
+      axis y line*=left,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      ylabel near ticks,
+      xlabel near ticks,  
+      grid style=dashed,    
+      xlabel={Iteration},
+      ylabel={Average Reward},
+      xmin=0, xmax=1200,
+      ymin=-60, ymax=0,
+      label style={font=\large},
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+	},
+	scaled x ticks=base 10:-2
+    ]
+    
+    \addplot[color=red, thick] table[x = ITERATIONS, y = RewardMean]{\remps};\label{plots:remps}
+    \addplot[color=blue, thick, dashdotted] table[x = ITERATIONS, y = RewardMean]{\reps};\label{plots:reps}
+
+   \nextgroupplot[
+      xmin=0, xmax=1200,
+      ymin=0, ymax=1,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      legend style={font=\tiny},
+      legend pos=north east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,  
+      grid style=dashed,    
+      xlabel={Iteration},
+      ylabel={Rear Wing},
+      label style={font=\large},
+      scaled x ticks=base 10:-2
+    ]
+    
+    
+   \addplot[color=red, thick] table[x = ITERATIONS, y = OmegaBefore_1]{\remps};
+    \addplot[color=blue, thick, dashdotted] table[x = ITERATIONS, y = OmegaBefore_1]{\reps};
+        
+        
+      \nextgroupplot[
+      legend pos=outer north east,
+      legend style={font=\tiny},
+      axis x line*=bottom,
+      axis y line*=left,
+      axis lines=middle,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      ylabel near ticks,
+      grid style=dashed,
+      xlabel near ticks,      
+      xlabel={Iteration},
+      ylabel={Front-Rear Brake Repartition},
+      xmin=0, xmax=1200,
+      ymin=0, ymax=1,
+      label style={font=\large},
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+	},
+	scaled x ticks=base 10:-2
+    ]
+    
+    \addplot[color=red, thick] table[x = ITERATIONS, y = OmegaBefore_2]{\remps};
+    \addplot[color=blue, thick, dashdotted] table[x = ITERATIONS, y = OmegaBefore_2]{\reps};
+   
+    
+  
+\end{groupplot}
+\path (myplot c2r1.south east |-current bounding box.south)--
+      			coordinate(legendpos)
+      			(myplot c2r1.south west|-current bounding box.south);
+			\matrix[matrix of nodes,
+    				anchor=north,
+    				inner sep=0.4em,
+    				draw=none
+  					]at([yshift=1ex]legendpos)
+  					{ 	
+						\ref{plots:remps}& REMPS &
+    					\ref{plots:reps}& REPS\\	
+    					};
+
+\end{tikzpicture}
+\end{document}

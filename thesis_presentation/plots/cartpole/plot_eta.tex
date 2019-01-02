@@ -1,0 +1,50 @@
+ \documentclass{standalone} 
+\usepackage{pgfplots, pgfplotstable}
+
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj5000-NewSamplingReg1e-3RegPolicyLowRewardeps-0.1/progress_small.csv}\epszeroone
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj5000-NewSamplingReg1e-3LowRewardeps-0.1/progress_small.csv}\nopolreg
+
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj5000-NewSamplingNoRegLowRewardeps-0.1/progress_small.csv}\noreg
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+	  ymin=0, ymax=0.6,
+	  xmin=0, xmax=5000,
+      legend style={font=\tiny},
+      ymajorgrids=true,
+      xmajorgrids=true,
+      grid style=dashed,
+      legend pos=outer north east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel=Iteration,
+      ylabel=$\eta$,
+    ]
+    
+    \addplot[smooth, color=red] 
+    table[x=ITERATIONS,
+          y=Eta]{\epszeroone};
+     \addlegendentry{$\epsilon \; 1$ DualReg,PolicyReg}
+     
+      \addplot[smooth, color=blue] 
+    table[x=ITERATIONS,
+          y=Eta]{\nopolreg};
+     \addlegendentry{$\epsilon \; 0.1$ DualReg}
+     
+    \addplot[smooth, color=green!50!black] 
+    table[x=ITERATIONS,
+          y=Eta]{\noreg};
+     \addlegendentry{$\epsilon \; 0.1$ NoReg}
+             
+    
+    
+
+\end{axis}	
+\end{tikzpicture}
+\end{document}

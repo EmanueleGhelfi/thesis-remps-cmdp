@@ -1,0 +1,49 @@
+ \documentclass{standalone} 
+\usepackage{pgfplots, pgfplotstable}
+
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./data/remps-approx-2/remps_approx_2_small.csv}\rempsapprox
+\pgfplotstableread[col sep = comma]{./data/remps-exact/remps_exact_small.csv}\rempsexact
+
+\pgfplotstableread[col sep = comma]{./data/gpomdp-exact/gpomdp_exact_small.csv}\gpomdp
+\pgfplotstableread[col sep = comma]{./data/gpomdp-approx-2/gpomdp_approx_2_small.csv}\gpomdpapprox
+
+
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+	  xmin=0, xmax=5000,
+      legend style={font=\tiny},
+      ymajorgrids=true,
+      xmajorgrids=true,
+      legend pos=outer north east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel=Iteration,
+      ylabel=NormDelta,
+    ]
+    
+    \addplot[smooth, color=blue] 
+    table[x=ITERATIONS,
+          y=NormDeltaVar]{\epszeroone};
+          
+    \addplot[smooth, color=red] 
+    table[x=ITERATIONS,
+          y=NormDeltaVar]{\nopolreg};
+          
+    \addplot[smooth, color=green!50!black] 
+    table[x=ITERATIONS,
+          y=NormDeltaVar]{\noreg};
+   	
+        
+    
+    
+
+\end{axis}	
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,119 @@
+ \documentclass{standalone} 
+\usepackage{pgfplots, pgfplotstable}
+\usepgfplotslibrary{fillbetween}
+
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./data/remps-approx/remps_approx_small.csv}\rempsapprox
+\pgfplotstableread[col sep = comma]{./data/remps-exact/remps_exact_small.csv}\rempsexact
+
+\pgfplotstableread[col sep = comma]{./data/gpomdp-exact/gpomdp_exact_small.csv}\gpomdp
+\pgfplotstableread[col sep = comma]{./data/gpomdp-approx/gpomdp_approx_small.csv}\gpomdpapprox
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+	  xmin=0, xmax=2000,
+	  ymin=0, ymax=10,
+      legend style={font=\tiny},
+      ymajorgrids=true,
+      xmajorgrids=true,
+      grid style=dashed,
+      legend pos=outer north east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel=Iteration,
+      ylabel=$\omega$,
+    ]
+     
+    \addplot[smooth, color=blue] 
+    table[x = Iterations,
+          y= Omega_mean]{\rempsapprox};
+     \addlegendentry{Approx Model}
+     
+     % std 
+    \addplot[name path=top, color=blue!30, no markers, forget plot]
+    table[x=Iterations,
+    y = Omega_sup]{\rempsapprox};
+
+    
+    % std
+    \addplot[name path=bot, color=blue!30, no markers, smooth, forget plot]
+    table[x=Iterations,
+    y=Omega_low]{\rempsapprox};
+    
+    % fill
+    \addplot[blue!10, forget plot] fill between[of=top and bot];
+    
+    
+       \addplot[smooth, color=green] 
+    table[x=Iterations,
+          y= Omega_mean]{\rempsexact};
+     \addlegendentry{Exact Model}
+     
+     % std 
+    \addplot[name path=top1, color=green!30, no markers, forget plot]
+    table[x=Iterations,
+    y = Omega_sup]{\rempsexact};
+
+    
+    % std
+    \addplot[name path=bot1, color=green!30, no markers, smooth, forget plot]
+    table[x=Iterations,
+    y=Omega_low]{\rempsexact};
+    
+    % fill
+    \addplot[green!10, forget plot] fill between[of=top1 and bot1];
+    
+    %%%%%%%%%%%%%%%%%%%%%% GPOMDP %%%%%%%%%%%%%%%%%%%%%%%%%%%
+         \addplot[smooth, color=red] 
+    table[x = Iterations,
+          y = Omega_mean]{\gpomdp};
+     \addlegendentry{GPOMDP}
+
+     % std 
+    \addplot[name path=top2, color=red!30, no markers, forget plot]
+    table[x=Iterations,
+    y = Omega_sup]{\gpomdp};
+
+    
+    % std
+    \addplot[name path=bot2, color=red!30, no markers, smooth, forget plot]
+    table[x=Iterations,
+    y=Omega_low]{\gpomdp};
+    
+    % fill
+   \addplot[red!10, forget plot] fill between[of=top2 and bot2];
+   
+   
+       %%%%%%%%%%%%%%%%%%%%%% GPOMDP %%%%%%%%%%%%%%%%%%%%%%%%%%%
+         \addplot[smooth, color=violet] 
+    table[x = Iterations,
+          y = Omega_mean]{\gpomdpapprox};
+     \addlegendentry{GPOMDP Approx}
+
+     % std 
+    \addplot[name path=top2, color=violet!30, no markers, forget plot]
+    table[x=Iterations,
+    y = Omega_sup]{\gpomdpapprox};
+
+    
+    % std
+    \addplot[name path=bot2, color=violet!30, no markers, smooth, forget plot]
+    table[x=Iterations,
+    y=Omega_low]{\gpomdpapprox};
+    
+    % fill
+   \addplot[violet!10, forget plot] fill between[of=top2 and bot2];
+
+     
+
+    
+    
+
+\end{axis}	
+\end{tikzpicture}
+\end{document}

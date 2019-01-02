@@ -1,0 +1,22 @@
+\chapter{Proof of Linear Programming Formulation}
+\label{LPproof}
+\thispagestyle{empty}
+
+\noindent This appendix provides the proof of Theorem \ref{lpth} that we report here for completeness:
+\begin{align*}
+	\underset{v}{\text{minimize}} & \; \sum_{s \in \mathcal{S}} \mu(s) v(s) \\
+	\text{subject to} &  \; v(s) \geq r(s,a) + \sum_{s' \in \mathcal{S}} P(s' \mid s,a) v(s') \, , \forall a \in \mathcal{A} \, .
+\end{align*} 
+
+\begin{theorem*}[Linear Programming Solution]
+$v^*$ is the solution of the above linear program.
+\end{theorem*}
+
+\begin{proof}
+	Let $T^*$ be the Bellman optimality operator, then the above LP can be rewritten as:
+	\begin{align*}
+	\underset{v}{\text{minimize}} & \; \mu^T v \\
+	\text{subject to} &  \; v \geq T^* (v) \, .
+\end{align*} 
+Using the \textit{monotonicity property} if $v \geq T^*(v)$, then $T^*(v) \geq T^*(T^*(v))$, and by applying infinite times the operator we obtain: $v \geq T^{* \infty} (v) = v^*$. Any feasible solution of the LP must satisfy $v \geq T^* (v)$, thus it must satisfy  $v \geq v^*$. Hence, assuming all entries $\mu$ are positive, $v^*$ is the optimal solution to the LP.
+\end{proof}

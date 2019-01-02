@@ -1,0 +1,112 @@
+\documentclass{standalone} 
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\usepackage{pgfplotstable} 
+
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./REMPS_chain_eps-0.0001.csv}\chainepsminusfour
+\pgfplotstableread[col sep = comma]{./REMPS_chain_eps-0.01.csv}\chainepsminustwo
+\pgfplotstableread[col sep = comma]{./REMPS_chain_eps-0.1.csv}\chainepsminusone
+\pgfplotstableread[col sep = comma]{./REMPS_chain_eps-1.csv}\chainepsone
+\pgfplotstableread[col sep = comma]{./REMPS_chain_eps-10.csv}\chainepsten
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+      ymin=0, ymax=1,
+      legend style={font=\tiny},
+      xmin=0, xmax=25,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      grid style=dashed,
+      legend pos=south east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel=Iteration,
+      ylabel=$\theta$,
+    ]
+    
+    %%%%%%%%%%%%%%%%%% 1e-4  %%%%%%%%%%%%%%%%%%%%
+    \addplot[smooth, color=red] 
+    table[x=Iterations,
+          y=Theta_mean]{\chainepsminusfour};
+     \addlegendentry{$\epsilon\;1e-4$}
+      
+      % std dev
+      \addplot[name path=epsmin4plus, smooth, color=red!20, forget plot] 
+    table[x=Iterations,
+          y expr = {\thisrow{Theta_mean}+\thisrow{Theta_std}/2}]{\chainepsminusfour};
+          
+       % std dev
+      \addplot[name path=epsmin4minus, smooth, color=red!20, forget plot] 
+    table[x=Iterations,
+          y expr = {\thisrow{Theta_mean}-\thisrow{Theta_std}/2}]
+          {\chainepsminusfour};
+          
+      % Fill area
+      \addplot[color=red!10, forget plot] fill between[ 
+    of = epsmin4plus and epsmin4minus, 
+     ];
+    
+    
+     %%%%%%%%%%%%%%%%%% 1e-2  %%%%%%%%%%%%%%%%%%%%
+    \addplot[smooth, color=blue]
+    table[x=Iterations,
+          y=Theta_mean]{\chainepsminustwo};
+     \addlegendentry{$\epsilon\;1e-2$}
+     
+     % std dev
+      \addplot[name path=epsmin2plus, smooth, color=blue!20, forget plot] 
+    table[x=Iterations,
+          y expr = {\thisrow{Theta_mean}+\thisrow{Theta_std}/2}]{\chainepsminustwo};
+     
+      % std dev
+      \addplot[name path=epsmin2minus, smooth, color=blue!20, forget plot] 
+    table[x=Iterations,
+          y expr = {\thisrow{Theta_mean}-\thisrow{Theta_std}/2}]
+          {\chainepsminustwo};
+          
+      % Fill area
+      \addplot[color=blue!10, forget plot] fill between[ 
+    of = epsmin2plus and epsmin2minus,
+     ];
+     
+     
+     %%%%%%%%%%%%%%%%%% 1  %%%%%%%%%%%%%%%%%%%%
+     \addplot[smooth, color=green]
+    table[x=Iterations,
+          y=Theta_mean]{\chainepsone};
+     \addlegendentry{$\epsilon \;1$}
+     
+      % std dev
+      \addplot[name path=epsmin1plus, smooth, color=green!20, forget plot] 
+    table[x=Iterations,
+          y expr = {\thisrow{Theta_mean}+\thisrow{Theta_std}/2}]{\chainepsone};
+     
+      % std dev
+      \addplot[name path=epsmin1minus, smooth, color=green!20, forget plot] 
+    table[x=Iterations,
+          y expr = {\thisrow{Theta_mean}-\thisrow{Theta_std}/2}]
+          {\chainepsone};
+          
+      % Fill area
+      \addplot[color=green!10, forget plot] fill between[ 
+    of = epsmin1plus and epsmin1minus,
+     ];
+
+
+
+      \addplot[smooth, color=orange]
+    table[x=Iterations,
+          y=Theta_mean]{\chainepsten};
+     \addlegendentry{$\epsilon \;10$}
+      \addplot[smooth, color=violet]
+    table[x=Iterations,
+          y=Theta_mean]{\chainepsminusone};
+     \addlegendentry{$\epsilon \;1e-1$}
+
+\end{axis}	
+\end{tikzpicture}
+\end{document}

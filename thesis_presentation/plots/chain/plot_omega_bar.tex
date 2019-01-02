@@ -1,0 +1,92 @@
+\documentclass{standalone} 
+\usepackage{pgfplots, pgfplotstable}
+
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./data/REMPS_chain_eps-0.0001.csv}\chainepsminusfour
+\pgfplotstableread[col sep = comma]{./data/REMPS_chain_eps-0.01.csv}\chainepsminustwo
+\pgfplotstableread[col sep = comma]{./data/REMPS_chain_eps-0.1.csv}\chainepsminusone
+\pgfplotstableread[col sep = comma]{./data/REMPS_chain_eps-1.csv}\chainepsone
+\pgfplotstableread[col sep = comma]{./data/REMPS_chain_eps-10.csv}\chainepsten
+
+\pgfplotstableread[col sep = comma]{./data/gpomdp/gpomdp.csv}\gpomdp
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+      ymin=-0.2, ymax=1,
+      legend style={font=\tiny},
+      xmin=0, xmax=20,
+      ymajorgrids=true,
+      xmajorgrids=true,
+      grid style=dashed,
+      legend pos=outer north east,
+      axis x line*=bottom,
+      axis y line*=left,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel=Iteration,
+      ylabel=$\omega$,
+    ]
+    
+    %%%%%%%%%%%%%%%%%% 1e-4  %%%%%%%%%%%%%%%%%%%%
+    \addplot+[smooth, color=red, no markers,
+       error bars/.cd, y dir=both, y explicit] 
+    table[x=Iterations,
+          y=Omega_mean, 
+          y error=Omega_std]{\chainepsminusfour};
+     \addlegendentry{$\epsilon\;\expnumber{1}{-4}$}
+      
+         
+    
+     %%%%%%%%%%%%%%%%%% 1e-2  %%%%%%%%%%%%%%%%%%%%
+    \addplot+[smooth, color=blue,no markers, error bars/.cd,  y dir=both, y explicit]
+    table[x=Iterations,
+          y=Omega_mean,
+          y error=Omega_std]{\chainepsminustwo};
+     \addlegendentry{$\epsilon\;\expnumber{1}{-2}$}
+     
+     
+     
+     %%%%%%%%%%%%%%%%%% 1  %%%%%%%%%%%%%%%%%%%%
+%    \addplot+[smooth, color=green, mark=o, error bars/.cd,  y dir=both, y explicit]
+%    table[x=Iterations,
+%          y=Omega_mean,
+%          y error=Omega_std]{\chainepsone};
+%     \addlegendentry{$\epsilon \;1$}
+     
+
+%%%%%%%%%%%%%%%%%% 10  %%%%%%%%%%%%%%%%%%%%
+      \addplot+[smooth, color=orange,no markers, error bars/.cd,  y dir=both, y explicit]
+    table[x=Iterations,
+          y=Omega_mean,
+          y error=Omega_std]{\chainepsten};
+     \addlegendentry{$\epsilon \;10$}
+     
+     %%%%%%%%%%%%%%%%%% 1e-1  %%%%%%%%%%%%%%%%%%%%
+     \addplot+[smooth, color=black, no markers, error bars/.cd,  y dir=both, y explicit]
+    table[x=Iterations,
+          y=Omega_mean,
+          y error=Omega_std]{\chainepsminusone};
+     \addlegendentry{$\epsilon \;0.1$}
+     
+     
+ %%%%%%%%%%%%%%%%%% GPOMDP  %%%%%%%%%%%%%%%%%%%%
+ \addplot+[smooth, color=violet, no markers, error bars/.cd,  y dir=both, y explicit]
+    table[x=Iterations,
+          y=Omega_mean,
+          y error=Omega_std]{\gpomdp};
+     \addlegendentry{GPOMDP}
+     
+     
+      \draw [very thick,dotted] (axis cs: 0,0) -- (axis cs: 20,0);
+    % absolute in pgfplots coordinates
+    \node[] at (axis cs: 2.5,-0.1) {\tiny Optimal Value};
+     
+
+
+\end{axis}	
+\end{tikzpicture}
+\end{document}

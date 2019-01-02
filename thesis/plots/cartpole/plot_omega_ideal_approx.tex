@@ -1,0 +1,70 @@
+ \documentclass{standalone} 
+\usepackage{pgfplots, pgfplotstable}
+
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./progress.csv}\epsone
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj5000-NewSamplingReg1e-3RegPolicyLowRewardeps-0.1/progress_small.csv}\epszeroone
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj5000-NewSamplingReg1e-3LowRewardeps-0.1/progress_small.csv}\nopolreg
+
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj5000-NewSamplingNoRegLowRewardeps-0.1/progress_small.csv}\noreg
+
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj50000-DualReg1e-05PolReg-0.0TrainingSet500-NNeps-0.01/progress_small.csv}\nnappr
+
+\pgfplotstableread[col sep = comma]{./data/cartPole-n-actions2-omega8.0-traj50000-DualReg0.0001PolReg-0.0TrainingSet500-NNeps-0.001/progress_small.csv}\nnapprs
+
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+	  ymin=0, ymax=10,
+	  xmin=0, xmax=2000,
+      legend style={font=\tiny},
+      ymajorgrids=true,
+      xmajorgrids=true,
+      grid style=dashed,
+      legend pos=outer north east,
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel=Iteration,
+      ylabel=$\omega$,
+    ]
+    
+%    \addplot[smooth, color=red] 
+%    table[x=ITERATIONS,
+%          y=Omega]{\epszeroone};
+%     \addlegendentry{$\epsilon\;0.1$ DualReg, PolicyReg}
+     
+    \addplot[smooth, color=blue] 
+    table[x=ITERATIONS,
+          y=Omega]{\nopolreg};
+     \addlegendentry{Ideal Model}
+         
+%   \addplot[smooth, color=green!50!black] 
+%    table[x=ITERATIONS,
+%          y=Omega]{\noreg};
+%     \addlegendentry{Ideal}
+     
+%     % approx
+%     \addplot[smooth, color=orange, each nth point={10}] 
+%    table[x=ITERATIONS,
+%          y=Omega
+%          ]{\nnappr};
+%     \addlegendentry{Approximated Model}
+%     
+      % approx
+     \addplot[smooth, color=orange, each nth point={10}] 
+    table[x=ITERATIONS,
+          y=Omega
+          ]{\nnapprs};
+     \addlegendentry{Approximated Model}
+ 
+    
+    
+
+\end{axis}	
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,80 @@
+\documentclass{standalone} 
+\usepackage{pgfplots, pgfplotstable}
+\usepgfplotslibrary{fillbetween}
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}}
+
+\usetikzlibrary{matrix}
+
+\pgfplotstableread[col sep = comma]{./data/remps_J_eps_10k.csv}\jepsten
+\pgfplotstableread[col sep = comma]{./data/remps_J_eps_50k.csv}\jepsfive
+\pgfplotstableread[col sep = comma]{./data/remps_J_eps_exact.csv}\jepsexact
+
+
+\pgfplotsset{
+    scale only axis,
+    tick align = outside,
+    yticklabel style={/pgf/number format/fixed}  
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+      legend pos=outer north east,
+      legend style={font=\tiny},
+      axis lines=middle,
+      ylabel near ticks,
+      xlabel near ticks,      
+      xlabel={$\epsilon$},
+      ylabel={$J^*(\epsilon)$},
+      xmin=0, xmax=1,
+      ymin=0, ymax=12,
+      yticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=5
+	},
+	%scaled y ticks=base 10:-3
+    ]
+    
+    %%%%%%%%%%%%% 10k samples %%%%%%%%%%%%%%%%%%
+%    \addplot[thick, color=red] 
+%    table[x = epsilon,
+%    y = J ]{\jepsten};
+%    \addlegendentry{J 10k samples}
+%    
+%        %%%%%%%%%%%%% 10k samples primal %%%%%%%%%%%%%%%%%%
+%    \addplot[thick, color=orange] 
+%    table[x = epsilon,
+%    y = primal ]{\jepsten};
+%    \addlegendentry{primal 10k samples}
+     
+%     %%%%%%%%%%%%% 50k samples %%%%%%%%%%%%%%%%%%
+%    \addplot[thick, color=green] 
+%    table[x = epsilon,
+%    y = J ]{\jepsfive};
+%    \addlegendentry{J 50k samples}
+%    
+%    %%%%%%%%%%%%% 50k samples primal %%%%%%%%%%%%%%%%%%
+%    \addplot[thick, color=black] 
+%    table[x = epsilon,
+%    y = primal ]{\jepsfive};
+%    \addlegendentry{primal 50k samples}
+    
+     %%%%%%%%%%%%% exact %%%%%%%%%%%%%%%%%%
+    \addplot[thick, color=blue, smooth] 
+    table[x = epsilon,
+    y = J ]{\jepsexact};
+    \addlegendentry{J exact}
+    
+    %%%%%%%%%%%%% primal exact %%%%%%%%%%%%%%%%%%
+    \addplot[thick, color=violet, smooth] 
+    table[x = epsilon,
+    y = primal ]{\jepsexact};
+    \addlegendentry{Primal}
+     
+     
+    \draw [very thick,dotted] (axis cs: 0,10) -- (axis cs: 20,10);
+    % absolute in pgfplots coordinates
+    \node[] at (axis cs: 0.4,10.5) {\small $J(\pi^*,P^*)$};
+\end{axis}	
+\end{tikzpicture}
+\end{document}
