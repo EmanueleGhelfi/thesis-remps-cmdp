@@ -1,6 +1,10 @@
 # thesis-remps-cmdp
 Repository for my M.Sc. thesis in RL.
 
+# Content
+The folder thesis contains the latex code for my thesis.
+The folder thesis_presentation contains the latex code for my presentation.
+
 # Introduction
 A Conf-MDP is a MDP in which the transition function p: (s,a) -> s' is affected by some configurable parameters \omega.
 The effect of the parameter on the transition function can be known (exact case) or unknown (approximated case).
